@@ -879,7 +879,167 @@ phase-9: detect conflicts and build decision rules
 
 ---
 
-# Phase 10：生成 references 方法论文件
+# Phase 10：建立关键词库模块
+
+新增 Keyword Library Builder 关键词库建立模块。
+
+目标：
+
+这个 Skill 不仅要能分析广告和关键词，还必须能系统建立、维护和更新亚马逊关键词库。
+
+新增文件：
+
+```text
+.agents/skills/amazon-ads-keyword-strategy/references/
+  12_keyword_library_building.md
+  13_keyword_database_schema.md
+
+.agents/skills/amazon-ads-keyword-strategy/scripts/
+  build_keyword_library.py
+  classify_keywords.py
+  update_keyword_library_from_ads.py
+
+data/processed/amazon_ads_skill/
+  keyword_library.jsonl
+  keyword_library.csv
+  keyword_library_report.md
+```
+
+要求：
+
+1. 关键词库不能只是关键词列表，而是结构化数据库。
+2. 每个关键词必须包含：
+
+```text
+keyword_id
+keyword
+normalized_keyword
+keyword_type
+source_type
+source_detail
+related_asins
+product_stage
+search_intent
+relevance_score
+traffic_level
+competition_level
+cpc_level
+conversion_potential
+ranking_priority
+ad_priority
+match_type_recommendation
+campaign_recommendation
+negative_match_recommendation
+risk_flags
+metrics
+status
+last_updated
+```
+
+3. 关键词来源必须支持：
+
+```text
+手动种子词
+产品标题 / 五点 / 描述
+竞品 ASIN 反查词
+广告搜索词报告
+自动广告搜索词
+手动广泛搜索词
+手动词组搜索词
+ABA / SQP / Brand Analytics
+Keepa / 竞品监控表
+文章和评论区提到的关键词案例
+```
+
+4. 关键词必须分成：
+
+```text
+seed_keyword
+core_keyword
+core_long_tail
+long_tail
+competitor_keyword
+brand_keyword
+defensive_keyword
+attribute_keyword
+scenario_keyword
+seasonal_keyword
+ranking_target_keyword
+converting_keyword
+negative_candidate
+negative_exact
+negative_phrase
+risk_keyword
+```
+
+5. 关键词状态必须支持：
+
+```text
+unverified
+testing
+validated_converting
+ranking_target
+scale_word
+defensive_word
+negative_candidate
+negative_exact
+negative_phrase
+seasonal_word
+risk_word
+```
+
+6. `build_keyword_library.py` 要能读取多个来源，去重、标准化、分类、评分，并输出 `keyword_library.jsonl` 和 `keyword_library.csv`。
+7. `classify_keywords.py` 要根据关键词文本、来源、指标和产品阶段，判断关键词类型、广告优先级、自然排名优先级和风险标签。
+8. `update_keyword_library_from_ads.py` 要能根据广告搜索词报告更新关键词状态，例如：
+
+```text
+有订单、ACOS 可接受：转为 validated_converting
+有订单且自然排名目标相关：转为 ranking_target
+点击多无订单：转为 negative_candidate
+明显无关：转为 negative_exact 或 negative_phrase
+高花费低转化：降低 ad_priority
+```
+
+9. `references/12_keyword_library_building.md` 必须写清楚：
+
+```text
+如何建立初始关键词库
+如何从竞品反查扩展关键词
+如何从广告搜索词报告沉淀关键词
+如何区分出单词和自然排名目标词
+如何建立否定词库
+如何建立竞品词库
+如何建立季节词库
+如何每 7 天 / 14 天 / 30 天更新关键词库
+```
+
+10. `references/13_keyword_database_schema.md` 必须写清楚 `keyword_library.jsonl` 的字段定义和示例。
+11. 修改 `SKILL.md`，在 Core Workflow 中加入：
+
+```text
+Keyword Library Building
+Keyword Classification
+Keyword Validation
+Keyword Library Update
+Negative Keyword Library Maintenance
+```
+
+执行：
+
+```powershell
+python ".agents/skills/amazon-ads-keyword-strategy/scripts/build_keyword_library.py" --seed-keyword "rolled ice cream maker" --seed-keyword "ice cream roll maker" --seed-keyword "Ninja creami"
+python ".agents/skills/amazon-ads-keyword-strategy/scripts/validate_outputs.py"
+```
+
+建议 commit message：
+
+```text
+phase-10: add keyword library builder module
+```
+
+---
+
+# Phase 11：生成 references 方法论文件
 
 根据：
 
@@ -1052,12 +1212,12 @@ Quality Checklist
 建议 commit message：
 
 ```text
-phase-10: generate references for rules cases metrics and noise filters
+phase-11: generate references for rules cases metrics and noise filters
 ```
 
 ---
 
-# Phase 11：编写最终 SKILL.md
+# Phase 12：编写最终 SKILL.md
 
 完善：
 
@@ -1118,12 +1278,12 @@ Quality Checklist
 建议 commit message：
 
 ```text
-phase-11: write final skill workflow and output format
+phase-12: write final skill workflow and output format
 ```
 
 ---
 
-# Phase 12：创建 examples
+# Phase 13：创建 examples
 
 完善：
 
@@ -1156,12 +1316,12 @@ ACOS 低但自然排名不提升、广告单占比高
 建议 commit message：
 
 ```text
-phase-12: add examples for ad diagnosis keyword strategy and case reasoning
+phase-13: add examples for ad diagnosis keyword strategy and case reasoning
 ```
 
 ---
 
-# Phase 13：建立测试集 evals
+# Phase 14：建立测试集 evals
 
 完善：
 
@@ -1229,12 +1389,12 @@ TACOS 下降但 ACOS 上升
 建议 commit message：
 
 ```text
-phase-13: add eval cases for rule case and comment handling
+phase-14: add eval cases for rule case and comment handling
 ```
 
 ---
 
-# Phase 14：验证脚本
+# Phase 15：验证脚本
 
 实现：
 
@@ -1285,12 +1445,12 @@ data/processed/amazon_ads_skill/validation_report.md
 建议 commit message：
 
 ```text
-phase-14: add validation script for skill artifacts
+phase-15: add validation script for skill artifacts
 ```
 
 ---
 
-# Phase 15：最终质量审查
+# Phase 16：最终质量审查
 
 完整检查：
 
@@ -1335,5 +1495,5 @@ git status
 建议 commit message：
 
 ```text
-phase-15: finalize validate and review amazon ads keyword strategy skill
+phase-16: finalize validate and review amazon ads keyword strategy skill
 ```

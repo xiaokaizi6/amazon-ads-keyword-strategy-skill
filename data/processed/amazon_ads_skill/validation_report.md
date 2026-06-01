@@ -1,6 +1,6 @@
 # Amazon Ads Skill Validation Report
 
-- Generated at: 2026-06-01T17:09:25
+- Generated at: 2026-06-01T21:28:43
 - Skill directory: `.agents/skills/amazon-ads-keyword-strategy`
 - Processed directory: `data/processed/amazon_ads_skill`
 - Status: **PASS**
@@ -16,6 +16,7 @@
 | SKILL.md frontmatter | pass |
 | JSONL legality | pass |
 | processed schema fields | pass |
+| keyword library schema | pass |
 | noise and comment confidence | pass |
 | eval set | pass |
 | references non-empty | pass |

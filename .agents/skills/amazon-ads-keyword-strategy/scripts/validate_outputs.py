@@ -45,12 +45,17 @@ REQUIRED_SKILL_FILES = [
     Path("references/09_case_library.md"),
     Path("references/10_noise_filter_rules.md"),
     Path("references/11_source_index.md"),
+    Path("references/12_keyword_library_building.md"),
+    Path("references/13_keyword_database_schema.md"),
     Path("examples/example_input_search_term_report.md"),
     Path("examples/example_output_ads_diagnosis.md"),
     Path("examples/example_output_keyword_strategy.md"),
     Path("examples/example_output_case_diagnosis.md"),
     Path("evals/test_cases.jsonl"),
     Path("evals/expected_outputs.md"),
+    Path("scripts/build_keyword_library.py"),
+    Path("scripts/classify_keywords.py"),
+    Path("scripts/update_keyword_library_from_ads.py"),
     Path("scripts/validate_outputs.py"),
 ]
 
@@ -60,6 +65,9 @@ REQUIRED_PROCESSED_FILES = [
     Path("case_library.jsonl"),
     Path("noise_comments.jsonl"),
     Path("conflict_candidates.jsonl"),
+    Path("keyword_library.jsonl"),
+    Path("keyword_library.csv"),
+    Path("keyword_library_report.md"),
 ]
 
 EXTRACTED_FIELDS = [
@@ -120,6 +128,47 @@ CASE_LIBRARY_FIELDS = [
     "related_rules",
     "evidence_quote",
     "confidence",
+]
+
+KEYWORD_LIBRARY_FIELDS = [
+    "keyword_id",
+    "keyword",
+    "normalized_keyword",
+    "keyword_type",
+    "source_type",
+    "source_detail",
+    "related_asins",
+    "product_stage",
+    "search_intent",
+    "relevance_score",
+    "traffic_level",
+    "competition_level",
+    "cpc_level",
+    "conversion_potential",
+    "ranking_priority",
+    "ad_priority",
+    "match_type_recommendation",
+    "campaign_recommendation",
+    "negative_match_recommendation",
+    "risk_flags",
+    "metrics",
+    "status",
+    "last_updated",
+]
+
+KEYWORD_METRIC_FIELDS = [
+    "impressions",
+    "clicks",
+    "ctr",
+    "cpc",
+    "orders",
+    "cvr",
+    "acos",
+    "tacos",
+    "spend",
+    "sales",
+    "organic_rank",
+    "ad_rank",
 ]
 
 EVAL_FIELDS = [
@@ -194,6 +243,7 @@ class Validator:
         self.check_skill_frontmatter()
         self.check_jsonl_files()
         self.check_processed_schemas()
+        self.check_keyword_library_schema()
         self.check_noise_and_comment_rules()
         self.check_eval_files()
         self.check_references()
@@ -420,6 +470,7 @@ class Validator:
             (self.processed_path(Path("noise_comments.jsonl")), EXTRACTED_FIELDS),
             (self.processed_path(Path("merged_rules.jsonl")), MERGED_RULE_FIELDS),
             (self.processed_path(Path("case_library.jsonl")), CASE_LIBRARY_FIELDS),
+            (self.processed_path(Path("keyword_library.jsonl")), KEYWORD_LIBRARY_FIELDS),
         ]
 
         ok = True
@@ -438,6 +489,61 @@ class Validator:
                     )
                 self.check_evidence_quotes(path, line_no, record)
         self.add_check("processed schema fields", "pass" if ok else "fail")
+
+    def check_keyword_library_schema(self) -> None:
+        path = self.processed_path(Path("keyword_library.jsonl"))
+        records = self.read_jsonl(path)
+        ok = True
+        seen_keywords: set[str] = set()
+        for line_no, record in records:
+            normalized = record.get("normalized_keyword")
+            if not isinstance(normalized, str) or not normalized:
+                ok = False
+                self.add_issue(
+                    "error",
+                    path,
+                    line_no,
+                    "normalized_keyword",
+                    "Keyword record has no normalized keyword.",
+                    "Set normalized_keyword so dedupe and updates work.",
+                )
+            elif normalized in seen_keywords:
+                ok = False
+                self.add_issue(
+                    "error",
+                    path,
+                    line_no,
+                    "normalized_keyword",
+                    "Duplicate normalized keyword.",
+                    "Merge duplicate keyword rows into one library record.",
+                )
+            else:
+                seen_keywords.add(normalized)
+
+            metrics = record.get("metrics")
+            if not isinstance(metrics, dict):
+                ok = False
+                self.add_issue(
+                    "error",
+                    path,
+                    line_no,
+                    "metrics",
+                    "Keyword metrics field is not an object.",
+                    "Store metrics as an object with required metric keys.",
+                )
+                continue
+            for field in KEYWORD_METRIC_FIELDS:
+                if field not in metrics:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        path,
+                        line_no,
+                        f"metrics.{field}",
+                        "Required keyword metric field is missing.",
+                        "Add the metric key and use null when data is unavailable.",
+                    )
+        self.add_check("keyword library schema", "pass" if ok else "fail")
 
     def check_evidence_quotes(
         self, path: Path, line_no: int, value: Any, field_path: str = ""

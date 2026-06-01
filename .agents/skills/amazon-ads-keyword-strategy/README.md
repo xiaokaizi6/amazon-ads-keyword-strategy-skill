@@ -21,6 +21,7 @@
 当用户的问题涉及以下场景时，使用这个 skill：
 
 - Amazon PPC 广告诊断
+- 系统建立和更新关键词库
 - 搜索词报告优化
 - 关键词分类和排名计划
 - ACOS、TACOS、CPC、CVR、CTR 诊断
@@ -40,6 +41,7 @@
 - 当前广告目标：盈利、冲排名、测词、防守、清库存、季节性抢量
 - 预算、花费、订单量、销售额
 - 搜索词报告或广告活动数据
+- 关键词库来源：手动种子词、产品 listing、竞品反查、广告搜索词、ABA/SQP、Keepa、亚马逊前台词、文章和评论信号
 - 目标关键词和当前自然排名
 - 广告类型、匹配类型、投放位置
 - CTR、CVR、CPC、ACOS、TACOS
@@ -79,6 +81,39 @@
 - `09_case_library.md`: 案例锚点和相似性判断
 - `10_noise_filter_rules.md`: 评论和噪音过滤
 - `11_source_index.md`: 来源集群和已处理数据索引
+- `12_keyword_library_building.md`: 关键词库建立流程、子库、状态、更新节奏和广告结构分配
+- `13_keyword_database_schema.md`: `keyword_library.jsonl` 字段、枚举值、指标对象和更新规则
+
+## 关键词库模块
+
+新增模块用于生成和维护结构化关键词库，不只是关键词列表。
+
+默认输出：
+
+```text
+data/processed/amazon_ads_skill/keyword_library.jsonl
+data/processed/amazon_ads_skill/keyword_library.csv
+data/processed/amazon_ads_skill/keyword_library_report.md
+```
+
+核心脚本：
+
+- `scripts/build_keyword_library.py`: 从多个来源构建关键词库，去重、标准化、分类、评分并输出 JSONL/CSV/报告。
+- `scripts/classify_keywords.py`: 根据关键词文本、来源、指标和产品阶段判断类型、优先级、风险标签和状态。
+- `scripts/update_keyword_library_from_ads.py`: 根据广告搜索词报告更新关键词状态和否定候选。
+
+关键词库必须区分：
+
+- 初始种子词库
+- 核心词库
+- 长尾词库
+- 竞品词库
+- 广告搜索词挖掘库
+- 自然排名目标词库
+- 已验证转化词库
+- 否定词库
+- 季节词库
+- 风险词库
 
 ## 示例文件
 
@@ -98,6 +133,7 @@
 - 新增可执行判断规则时，优先放入 `SKILL.md` 或对应 `references/` 文件。
 - 新增案例时，放入案例库或结构化数据，不要把案例改写成通用规则。
 - 新增评论区观点时，先分类为 `diagnostic_hypothesis`、`counterexample`、`comment_signal` 或 `irrelevant_noise`。
+- 新增关键词库规则时，优先更新 `references/12_keyword_library_building.md` 和 `references/13_keyword_database_schema.md`。
 - 冲突观点必须进入条件化判断，不要声明单边观点永远正确。
 
 ## 快速检查清单
@@ -109,5 +145,7 @@
 - 是否根据样本量决定搜索词动作
 - 是否区分了案例、规则、评论信号和噪音
 - 是否避免把低 ACOS 或高 ACOS 直接等同于好坏
+- 是否区分了出单词和自然排名目标词
+- 如果建立关键词库，是否包含来源、类型、状态、指标、优先级和风险标签
 - 是否给出了 7 天、14 天、30 天行动计划
 - 是否标明置信度和缺失数据

@@ -27,6 +27,9 @@ Every full answer should follow the skill format:
 - Case library references as similarity anchors, not universal rules.
 - Comment signals lowered to medium or low confidence unless they have condition, action, reasoning, limitation, and supporting evidence.
 - Noise comments excluded from the rule library.
+- Keyword library building is separate from keyword classification.
+- Keyword library answers include source, type, status, metrics, priority, risk flags, and update cadence.
+- `出单词` and `自然排名目标词` remain separate in the keyword library.
 
 ## Global Must Not Include
 
@@ -36,6 +39,8 @@ Every full answer should follow the skill format:
 - Comment-only advice as high confidence.
 - Case posts converted into universal rules.
 - Directly closing ads without checking objective, sample size, ad position, CTR, CVR, TACOS, and natural rank.
+- Building only a plain keyword list when the user asks for a keyword library.
+- Treating one source, such as comments or competitor reverse lookup, as enough to finalize the library.
 
 ## Dedicated Regression Case
 
@@ -78,3 +83,6 @@ The answer must not contain:
 | 案例帖处理 | T023 |
 | 评论区噪音过滤 | T024, T039 |
 | 评论区诊断观点降置信度 | T004, T025, T026 |
+| 关键词库建立 | T041 |
+| 广告搜索词更新关键词库 | T042 |
+| 出单词与自然排名目标词区分 | T027, T029, T035, T043 |

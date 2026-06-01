@@ -1,11 +1,11 @@
 ---
 name: amazon-ads-keyword-strategy
-description: Use this skill when analyzing Amazon advertising, keyword strategy, search term reports, competitor keyword data, Keepa trends, product lifecycle strategy, ACOS/TACOS optimization, ranking diagnosis, and launch-stage ad planning.
+description: Use this skill when analyzing Amazon advertising, keyword strategy, keyword library building, search term reports, competitor keyword data, Keepa trends, product lifecycle strategy, ACOS/TACOS optimization, ranking diagnosis, and launch-stage ad planning.
 ---
 
 # Purpose
 
-Diagnose Amazon ads, keyword ranking, search-term optimization, campaign structure, and product-stage strategy with evidence-backed, conditional recommendations.
+Diagnose Amazon ads, keyword ranking, keyword library building, search-term optimization, campaign structure, and product-stage strategy with evidence-backed, conditional recommendations.
 
 This skill must avoid generic advice. It should separate:
 
@@ -42,6 +42,7 @@ Ask for or infer these before making strong recommendations:
 - budget and current spend,
 - search term report or campaign metrics,
 - target keywords and current natural rank,
+- keyword library sources: manual seeds, product listing terms, competitor reverse lookup, ad search terms, ABA/SQP, Keepa, Amazon front-end terms, articles, or comments,
 - campaign type and match type,
 - CTR, CVR, CPC, ACOS, TACOS, orders, spend,
 - ad order share and natural order share,
@@ -65,15 +66,55 @@ Helpful but not always required:
 
 1. Identify the product stage and primary ad goal.
 2. Check data completeness and mark missing metrics.
-3. Classify keywords by role: discovery, profit, defense, competitor attack, or natural-rank target.
-4. Separate cases from rules and comments.
-5. Diagnose campaign structure by goal and stage.
-6. Review search terms with sample-size logic.
-7. Interpret ACOS with TACOS, CVR, CPC, orders, ad order share, and natural rank.
-8. Check whether ad-order terms match natural-rank target terms.
-9. Compare with case library only as a similarity anchor.
-10. Resolve conflicts conditionally using product stage, margin, budget, sample size, ad goal, natural-rank target, inventory, and keyword type.
-11. Produce a 7-day, 14-day, and 30-day action plan.
+3. Build or update the keyword library when the task includes seed words, competitor terms, ad search terms, front-end terms, third-party keyword exports, article terms, or comment signals.
+4. Classify keywords by role: discovery, profit, defense, competitor attack, conversion, negative, risk, seasonal, or natural-rank target.
+5. Validate keywords with source, metrics, product stage, sample size, and ranking objective.
+6. Update keyword statuses: unverified, testing, validated converting, ranking target, scale word, defensive word, negative candidate, negative exact, negative phrase, seasonal word, or risk word.
+7. Maintain negative keyword library with sample-size and relevance logic.
+8. Separate cases from rules and comments.
+9. Diagnose campaign structure by goal and stage.
+10. Review search terms with sample-size logic.
+11. Interpret ACOS with TACOS, CVR, CPC, orders, ad order share, and natural rank.
+12. Check whether ad-order terms match natural-rank target terms.
+13. Compare with case library only as a similarity anchor.
+14. Resolve conflicts conditionally using product stage, margin, budget, sample size, ad goal, natural-rank target, inventory, and keyword type.
+15. Produce a 7-day, 14-day, and 30-day action plan.
+
+# Keyword Library Module
+
+Use `references/12_keyword_library_building.md` and `references/13_keyword_database_schema.md` when the user asks to build, maintain, update, or audit a keyword library.
+
+The keyword library must not be a plain keyword list. It must be a structured database that separates:
+
+- seed keyword library,
+- core keyword library,
+- long-tail keyword library,
+- competitor keyword library,
+- search-term harvesting library,
+- ranking target keyword library,
+- conversion keyword library,
+- negative keyword library,
+- seasonal keyword library,
+- risk keyword library.
+
+Required outputs:
+
+- `data/processed/amazon_ads_skill/keyword_library.jsonl`
+- `data/processed/amazon_ads_skill/keyword_library.csv`
+- `data/processed/amazon_ads_skill/keyword_library_report.md`
+
+Optional operator export:
+
+- `outputs/keyword_library.xlsx`
+
+Important rules:
+
+- Keyword classification and keyword library building are different tasks.
+- Every keyword needs source, type, status, priority, risk flags, and metrics.
+- Keyword sources should be multi-source; do not rely on one source only.
+- `出单词` and `自然排名目标词` must be tracked separately.
+- Comment-derived keywords are weak signals until validated by ad, ranking, or third-party data.
+- Negative keywords need sample-size and relevance reasoning before final action.
 
 # Record Types
 
@@ -207,6 +248,8 @@ Always answer in this structure:
 - `09_case_library.md`: case anchors and similarity checks.
 - `10_noise_filter_rules.md`: comment and noise exclusion rules.
 - `11_source_index.md`: source clusters and processed data map.
+- `12_keyword_library_building.md`: keyword library sources, sub-libraries, workflow, statuses, update cadence, and campaign assignment.
+- `13_keyword_database_schema.md`: keyword library JSONL/CSV fields, allowed values, metrics object, and update semantics.
 
 # Explicit Prohibitions
 
@@ -218,6 +261,8 @@ Always answer in this structure:
 - 不要把案例直接当成规则。
 - 不要把评论区观点当成确定性结论。
 - 不要把无关评论进入规则库。
+- 不要把关键词分类等同于关键词库建立。
+- 不要把出单词和自然排名目标词混为一谈。
 - 冲突观点必须条件化处理。
 
 # Quality Checklist
@@ -232,6 +277,9 @@ Before finalizing:
 - Do not treat a case as a universal rule.
 - Do not treat comment viewpoints as certain conclusions.
 - Do not allow irrelevant comments into the rule library.
+- Do not treat keyword classification as the same thing as keyword library building.
+- Separate converting keywords from natural-rank target keywords.
+- If building a keyword library, include source, type, status, priority, metrics, and update cadence.
 - Resolve conflicts conditionally.
 - State confidence and missing data.
 - Keep recommendations tied to evidence and business objective.
