@@ -78,7 +78,10 @@ Helpful but not always required:
 12. Check whether ad-order terms match natural-rank target terms.
 13. Compare with case library only as a similarity anchor.
 14. Resolve conflicts conditionally using product stage, margin, budget, sample size, ad goal, natural-rank target, inventory, and keyword type.
-15. Produce a 7-day, 14-day, and 30-day action plan.
+15. When new lectures or files are supplied, apply `references/14_source_validation_and_conflict_protocol.md` before promoting any claim into the rule library.
+16. Use `scripts/review_sources.py` to create a source manifest and claim-level coverage report; do not create a claim review without atomic claim input.
+17. Use `references/16_cpc_playbook_integration.md` as the validated/conditional integration layer for the CPC playbook; it is not a replacement for the raw source or claim review.
+18. Produce a 7-day, 14-day, and 30-day action plan.
 
 # Keyword Library Module
 
@@ -210,6 +213,38 @@ For every conflict:
 - state when to avoid the action,
 - keep case posts as support or counterexamples, not absolute rules.
 
+# New Source Validation
+
+Use `references/14_source_validation_and_conflict_protocol.md` whenever the user supplies lectures, documents, course notes, exports, or other knowledge sources.
+
+- Preserve the original source and create a source inventory before evaluating claims.
+- Cross-check material claims against all relevant project sources and all in-scope user-provided documents; record coverage and any unreadable or excluded files.
+- For time-sensitive platform facts and policies, verify against current first-party Amazon sources and record the verification date.
+- Do not call a claim wrong merely because it lacks evidence. Distinguish `confirmed_error`, `outdated`, `unsupported`, `context_dependent`, `disputed`, `unresolved`, and `supported`.
+- If evidence cannot resolve a conflict, retain all meaningful views and explain each approach, conditions, risks, missing data, and a bounded validation test.
+- Treat duplicated, syndicated, or mutually copied sources as one evidence cluster rather than independent confirmation.
+
+# Conditional Source Claims
+
+The skill must retain useful claims even when they are not universal rules. Use the claim status as an operating marker:
+
+- `supported`: may be used as a conditional rule when the recorded conditions match; cite the source and limitations.
+- `context_dependent`: may be used only after checking stage, marketplace, category, margin, budget, sample size, and objective; label it as conditional.
+- `disputed`: show the meaningful View A and View B, explain the conflict, and do not return one unconditional action.
+- `unresolved`: keep it as a diagnostic hypothesis or bounded test; do not state it as a platform fact or direct action.
+- `unsupported`: preserve it for audit and alternative thinking, but do not use it as the default recommendation or threshold.
+- `outdated`: retain historical context only and verify the current Amazon console/documentation before use.
+- `confirmed_error`: do not recommend it; retain the direct counterevidence and verification trail.
+
+Whenever a conditional source claim is used, the answer must include:
+
+1. `来源状态` and source location;
+2. applicable conditions and missing data;
+3. the action route, alternative route, or reason to avoid the action;
+4. a reversible validation window with success and stop criteria.
+
+Do not silently drop `disputed`, `unresolved`, or `unsupported` claims. Do not silently promote them into `merged_rules.jsonl` as universal `executable_rule` records. Use `references/16_cpc_playbook_integration.md` and `data/processed/amazon_ads_skill/claim_review.jsonl` as the conditional claim layer.
+
 # Confidence Rules
 
 - `high`: rare; requires strong source evidence, concrete metrics, clear scope, and low contradiction.
@@ -250,6 +285,9 @@ Always answer in this structure:
 - `11_source_index.md`: source clusters and processed data map.
 - `12_keyword_library_building.md`: keyword library sources, sub-libraries, workflow, statuses, update cadence, and campaign assignment.
 - `13_keyword_database_schema.md`: keyword library JSONL/CSV fields, allowed values, metrics object, and update semantics.
+- `14_source_validation_and_conflict_protocol.md`: source inventory, claim-level cross-validation, error thresholds, uncertainty preservation, and coverage reporting.
+- `15_source_review_schema.md`: JSONL contracts and status rules for source manifests, claim reviews, and coverage reports.
+- `16_cpc_playbook_integration.md`: cross-validated integration of the user-provided CPC playbook, including supported definitions, conditional strategies, disputed ranking claims, and unresolved platform facts.
 
 # Explicit Prohibitions
 
@@ -264,6 +302,9 @@ Always answer in this structure:
 - 不要把关键词分类等同于关键词库建立。
 - 不要把出单词和自然排名目标词混为一谈。
 - 冲突观点必须条件化处理。
+- 不要把“缺少支持”直接写成“已证明错误”。
+- 不要在没有覆盖记录时声称已检查全部项目资料。
+- 无法确定的不同观点不得静默删除。
 
 # Quality Checklist
 
@@ -281,5 +322,8 @@ Before finalizing:
 - Separate converting keywords from natural-rank target keywords.
 - If building a keyword library, include source, type, status, priority, metrics, and update cadence.
 - Resolve conflicts conditionally.
+- If new source material was supplied, record source coverage and claim status using the source-validation protocol.
+- Reserve `confirmed_error` for claims with direct higher-quality counterevidence; preserve unresolved alternatives.
+- When source files are supplied, use `scripts/review_sources.py` and report `PASS`, `PARTIAL`, `FAIL`, or `NOT_READY` coverage honestly.
 - State confidence and missing data.
 - Keep recommendations tied to evidence and business objective.

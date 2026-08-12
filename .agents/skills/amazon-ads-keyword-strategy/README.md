@@ -83,6 +83,9 @@
 - `11_source_index.md`: 来源集群和已处理数据索引
 - `12_keyword_library_building.md`: 关键词库建立流程、子库、状态、更新节奏和广告结构分配
 - `13_keyword_database_schema.md`: `keyword_library.jsonl` 字段、枚举值、指标对象和更新规则
+- `14_source_validation_and_conflict_protocol.md`: 新讲义/文件的来源登记、全库交叉验证、错误判定、冲突保留和覆盖报告
+- `15_source_review_schema.md`: `source_manifest.jsonl`、`claim_review.jsonl` 和 `source_validation_report.md` 的输入输出契约
+- `16_cpc_playbook_integration.md`: 用户讲义的条件化主张层；保留 `supported`、`context_dependent`、`disputed`、`unresolved`、`unsupported` 等状态及使用模板
 
 ## 关键词库模块
 
@@ -101,6 +104,9 @@ data/processed/amazon_ads_skill/keyword_library_report.md
 - `scripts/build_keyword_library.py`: 从多个来源构建关键词库，去重、标准化、分类、评分并输出 JSONL/CSV/报告。
 - `scripts/classify_keywords.py`: 根据关键词文本、来源、指标和产品阶段判断类型、优先级、风险标签和状态。
 - `scripts/update_keyword_library_from_ads.py`: 根据广告搜索词报告更新关键词状态和否定候选。
+- `scripts/build_rulebooks.py`: 从 normalized records 独立重建 `merged_rules.jsonl`。
+- `scripts/build_case_library.py`: 从 normalized records 独立重建 `case_library.jsonl`。
+- `scripts/review_sources.py`: 生成来源清单、主张审查结果和覆盖报告；没有 claims 输入时保持 `NOT_READY`。
 
 关键词库必须区分：
 
@@ -135,6 +141,12 @@ data/processed/amazon_ads_skill/keyword_library_report.md
 - 新增评论区观点时，先分类为 `diagnostic_hypothesis`、`counterexample`、`comment_signal` 或 `irrelevant_noise`。
 - 新增关键词库规则时，优先更新 `references/12_keyword_library_building.md` 和 `references/13_keyword_database_schema.md`。
 - 冲突观点必须进入条件化判断，不要声明单边观点永远正确。
+- 新讲义不能直接写入规则库；先做来源登记和主张级交叉验证。
+- 未升级为通用规则的讲义内容也要保留在条件化主张层，使用状态标签、适用条件、缺失数据和验证窗口，不得静默删除。
+- “错误”“过时”“缺少支持”“条件化”“有争议”“无法判断”必须分开表达。
+- 无法确定时保留不同观点，并说明各自条件、风险、所需数据和验证方法。
+- 每次项目任务按根目录 `AGENTS.md` 更新 `docs/CODEX_HANDOFF.md` 和一份历史交接。
+- 新资料进入后使用 `scripts/review_sources.py` 先生成来源清单，再审查原子主张；没有主张输入时报告必须为 `NOT_READY`。
 
 ## 快速检查清单
 

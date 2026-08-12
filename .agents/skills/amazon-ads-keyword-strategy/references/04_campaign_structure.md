@@ -55,6 +55,8 @@ Evidence base: normalized rules contain the most support for bidding/budget, ran
 - Action: separate bids or campaigns when testing close/substitute/loose/complement style traffic; move proven search terms out.
 - Caveat: comments suggest CPC tiers can change auto traffic composition; keep comment-derived claims at medium or low confidence.
 
+Official boundary: Amazon currently describes automatic targeting as close match, loose match, substitutes, and complements; manual keyword targeting as broad, phrase, and exact. These definitions support separating discovery and controlled targeting, but do not prove that one match type always has the best CVR or ACOS. See `references/16_cpc_playbook_integration.md` (CPC-CLM-003 to CPC-CLM-006).
+
 ### 手动精准
 
 - Best use: known converting terms, rank target terms, controlled budget, and repeatable measurement.
@@ -90,6 +92,12 @@ Evidence base: normalized rules contain the most support for bidding/budget, ran
 - Best use: when your offer has a concrete advantage over the competitor.
 - Required checks: competitor relevance, price/review/rating edge, page position, CPC ceiling.
 - Caveat: aggressive competitor targeting without conversion advantage is budget risk.
+
+### 广告目标隔离
+
+- Keep discovery, profit capture, defense, conquest, and rank-test objectives in separate campaigns or ad groups when the budget, bidding logic, or success metric differs.
+- Amazon's official guidance also recommends organizing campaigns around objectives and grouping related products; this supports the structure principle but does not prescribe one universal naming hierarchy.
+- Product targeting and category targeting should be measured separately when the decision depends on page placement, relevance, or competitor strength.
 
 ## Evidence Anchors
 

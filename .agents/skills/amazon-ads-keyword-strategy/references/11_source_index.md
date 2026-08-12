@@ -14,6 +14,9 @@ Evidence base generated from 100 markdown posts split into 2002 sections. The ex
 | `merged_rules.jsonl` | Rule and diagnostic-candidate library. |
 | `case_library.jsonl` | Case observations kept separate from rules. |
 | `conflict_candidates.jsonl` | Conditional conflict decision rules. |
+| `source_manifest.jsonl` | Source inventory with content hashes, evidence clusters, and readability limits; generated when source review is run. |
+| `claim_review.jsonl` | Claim-level review records; generated only when an atomic claims input is supplied. |
+| `source_validation_report.md` | Coverage and review-status report; `NOT_READY` is valid before claims are supplied. |
 
 ## High-Signal Source Clusters
 
@@ -56,6 +59,7 @@ The conflict register currently contains 10 conditional conflicts:
 - Treating `comment_signal` as rule evidence.
 - Losing source IDs when summarizing.
 - Using conflict candidates as absolute decisions instead of conditional frameworks.
+- Treating a source manifest as proof that every claim was reviewed.
 
 ## Quality Checklist
 
@@ -64,3 +68,5 @@ The conflict register currently contains 10 conditional conflicts:
 - Comment confidence limits are preserved.
 - Metrics are not invented when missing.
 - Conflicts are resolved with product stage, margin, budget, sample size, ad goal, natural-rank target, inventory, and keyword type.
+- Source review reports list unreadable and unreviewed sources explicitly.
+- `confirmed_error` claims have direct opposing evidence and a verification test.

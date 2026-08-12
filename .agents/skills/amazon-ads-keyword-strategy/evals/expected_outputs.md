@@ -41,6 +41,19 @@ Every full answer should follow the skill format:
 - Directly closing ads without checking objective, sample size, ad position, CTR, CVR, TACOS, and natural rank.
 - Building only a plain keyword list when the user asks for a keyword library.
 - Treating one source, such as comments or competitor reverse lookup, as enough to finalize the library.
+- Declaring an unsupported lecture claim `confirmed_error` without direct higher-quality counterevidence.
+- Silently deleting unresolved or disputed approaches instead of preserving their conditions and risks.
+
+## New Source Conflict Regression
+
+When the user supplies conflicting lectures or files, the answer must:
+
+- create a source inventory and record actual cross-validation coverage;
+- distinguish `confirmed_error`, `outdated`, `unsupported`, `context_dependent`, `disputed`, `unresolved`, and `supported`;
+- treat copied or syndicated sources as one evidence cluster;
+- retain unresolved meaningful views;
+- explain each approach's applicable conditions, risks, missing data, and bounded validation test;
+- avoid claiming all project documents were checked unless the coverage record proves it.
 
 ## Dedicated Regression Case
 
@@ -86,3 +99,35 @@ The answer must not contain:
 | 关键词库建立 | T041 |
 | 广告搜索词更新关键词库 | T042 |
 | 出单词与自然排名目标词区分 | T027, T029, T035, T043 |
+| 新讲义主张交叉验证 | T044, T045, T046 |
+| 条件化保留争议观点 | T047 |
+
+## T046: CPC Playbook Claims Must Be Conditional
+
+The answer must include:
+
+- 20 次点击是 Amazon 官方建议的否词检查点，不是所有账户的自动否词命令
+- TOS 100%-200% 等固定比例必须条件化，并说明需要账户数据验证
+- “新品三个月流量扶持”保持未确认，不得写成平台通用机制
+- quality-score 扣费公式不能在没有当前官方证据时写成 Amazon 平台机制
+- 来源清单、原子主张和覆盖状态；`PARTIAL`/`NOT_READY` 不得写成全部资料已核对
+
+The answer must not contain:
+
+- 所有账户通用
+- 已证明正确
+- 已核对全部项目资料
+
+## T047: Keep Unresolved Claims With Explicit Markers
+
+The answer must include:
+
+- `disputed`、`unresolved`、`unsupported` 等来源状态
+- 适用条件、缺失数据、支持路线和保守路线
+- 可逆验证窗口、成功标准和停止标准
+
+The answer must not:
+
+- 静默删除争议观点
+- 将未验证观点写成通用规则
+- 给出没有来源状态的确定性结论
