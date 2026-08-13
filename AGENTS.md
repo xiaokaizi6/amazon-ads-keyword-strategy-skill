@@ -20,6 +20,7 @@
 - 不确定观点不得删除。必须保留不同观点、适用条件、反对证据、缺失数据和验证方法。
 - 未经证据支持，不得用“错误”“已验证”“全部检查”等确定性措辞。
 - 不建议违规操纵、虚假交易、侵权或规避平台政策的做法；相关内容只可作为风险证据保留并明确标记。
+- 凡是广告优化、关键词、竞品、预算、竞价、否词、排名或生命周期建议，必须先读取当前实际使用的 `amazon-ads-keyword-strategy/SKILL.md` 及任务相关 reference；不得脱离 Skill 凭通用经验直接给出动作。Skill 或必要 reference 无法加载时，只能说明 `Skill 使用状态: PARTIAL/BLOCKED`，提出诊断问题或可逆测试。
 
 来源交叉验证必须遵守 `.agents/skills/amazon-ads-keyword-strategy/references/14_source_validation_and_conflict_protocol.md`。每批新资料至少要建立来源清单、重要主张清单和覆盖记录；只有覆盖记录证明已检查全部在范围内资料时，才可以声称“已与所有项目资料交叉验证”。
 

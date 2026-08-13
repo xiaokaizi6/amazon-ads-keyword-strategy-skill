@@ -263,3 +263,37 @@ The answer must not:
 - claim that `README.md` is required for Codex skill discovery
 - force an unrelated narrow question into all 11 diagnosis sections
 - claim that structural validation proves model answer quality
+
+## T056: Live Market Data MCP Must Gate Current Decisions
+
+The answer must include:
+
+- a required 西柚洞察 MCP call for current market, competitor, keyword, demand, trend, ranking, or expansion decisions
+- `实时数据调用状态` with an honest `COMPLETE`, `PARTIAL`, `BLOCKED`, or `NOT_REQUIRED` value
+- marketplace/site, ASIN or keyword, requested/returned time window, actual operation name, freshness, returned fields, and missing data
+- a clear separation between MCP market evidence, user account reports, project claims/cases, and Amazon official policy/function evidence
+- conditional alternatives or a reversible low-risk test when MCP data is missing or incomplete
+
+The answer must not:
+
+- invent an MCP operation, field, date, record count, or result
+- claim a market-dependent decision was validated without a successful, sufficiently scoped call
+- use search volume or competitor rank alone as proof of organic-ranking causality
+- issue a mandatory bid, negative-keyword, budget, or campaign action after a failed MCP call
+
+## T057: Skill Must Be Loaded Before Advertising Advice
+
+The answer must include:
+
+- `Skill 使用状态` with `LOADED`, `PARTIAL`, `BLOCKED`, or `NOT_REQUIRED`
+- confirmation that the current `SKILL.md` was read before the recommendation, plus the actual Skill path when available
+- the task-relevant References Map entries and the applied stage, objective, data, evidence, and compliance constraints
+- a clear prohibition on giving Amazon advertising actions from generic memory outside the Skill
+- diagnostic questions or reversible tests when the Skill or required reference cannot be loaded
+
+The answer must not:
+
+- issue a bid, budget, negative-keyword, campaign, ranking, or competitor action solely from general experience
+- claim to have followed the Skill without loading it
+- treat `merged_rules.jsonl` as the only Skill knowledge layer
+- bypass the Skill-first gate because the user requested a short or direct answer

@@ -47,6 +47,7 @@ Ask for or infer these before making strong recommendations:
 - CTR, CVR, CPC, ACOS, TACOS, orders, spend,
 - ad order share and natural order share,
 - inventory pressure and promotion calendar.
+- live market/competitor/keyword data needed for the decision, or an explicit reason it is `NOT_REQUIRED`.
 
 # Optional Inputs
 
@@ -65,7 +66,9 @@ Helpful but not always required:
 # Core Workflow
 
 1. Identify the product stage and primary ad goal.
+1a. Read the current `SKILL.md` and the task-relevant References Map entries before giving any Amazon advertising optimization advice. If the Skill or required references cannot be loaded, mark `Skill 使用状态: BLOCKED`/`PARTIAL` and do not issue a strong ad action; follow `references/25_skill_first_decision_gate.md`.
 2. Check data completeness and mark missing metrics.
+2a. Before any decision that depends on current market, competitor, keyword, demand, trend, ranking, or expansion facts, read `references/24_live_market_data_mcp_decision_gate.md` and call the installed 西柚洞察 MCP for the minimum required data. Record the actual operation, query scope, marketplace, time window, freshness, returned fields, and missing data. If the call is unavailable or incomplete, use `BLOCKED`/`PARTIAL` and do not issue a strong market-dependent action.
 3. Build or update the keyword library when the task includes seed words, competitor terms, ad search terms, front-end terms, third-party keyword exports, article terms, or comment signals.
 4. Classify keywords by role: discovery, profit, defense, competitor attack, conversion, negative, risk, seasonal, or natural-rank target.
 5. Validate keywords with source, metrics, product stage, sample size, and ranking objective.
@@ -89,6 +92,7 @@ Helpful but not always required:
 18d. Use `references/21_disputed_uncertain_claim_retention.md` as the mandatory registry for all `disputed`, `unresolved`, `unsupported`, `outdated`, and `context_dependent` source claims; retain them with visible status markers even when they cannot enter `merged_rules.jsonl`.
 18e. Use `references/22_full_batch_review_2026-08-13.md` and the generated full-batch JSONL/report when the user asks whether all 100 project articles and all uploaded material were reviewed together. Distinguish machine readability from manual review and distinguish source coverage from factual support.
 18f. Use `references/23_advanced_ads_pdf_live_review_2026-08-13.md` and the `PDFLIVE-*` claim/case artifacts for direct questions about the 143-page advanced-diagnosis PDF. Treat the PDF as visually reviewed but machine-unreadable, keep its 2025-05 UI descriptions historical, and show `讲义案例提示` when a retained PDF claim or case matches the question.
+18g. Use `references/24_live_market_data_mcp_decision_gate.md` whenever a recommendation needs current market, competitor, keyword, demand, trend, ranking, or expansion data. The installed 西柚洞察 MCP is the required live market evidence layer; never invent an operation or fabricate a result. A missing/failed call permits only a diagnostic question, conditional alternatives, or reversible low-risk test—not a strong market-dependent decision.
 19. For every future source, retain all concrete decision-relevant cases in the source-case record layer described in `references/14_source_validation_and_conflict_protocol.md`; preserve source-faithful metrics, observations, stated explanation, and limitations even when the case cannot support a general rule.
 20. When answering a question materially related to a retained conditional claim or source case, proactively disclose its `来源状态` / case confidence, conditions, material differences, and validation boundary, even if the user did not explicitly ask about uncertainty.
 21. Produce a 7-day, 14-day, and 30-day action plan.
@@ -313,6 +317,8 @@ For a narrow question, use only the relevant sections. Do not fill unrelated sec
 - `21_disputed_uncertain_claim_retention.md`: mandatory registry and answer protocol for retaining disputed, unresolved, unsupported, outdated, and context-dependent claims.
 - `22_full_batch_review_2026-08-13.md`: unified full-batch review boundary, source/claim/case counts, coverage-versus-truth rules, and cross-validation conclusions.
 - `23_advanced_ads_pdf_live_review_2026-08-13.md`: live 143-page PDF review, 18 atomic claims, four source-faithful cases, page-level evidence boundaries, current Amazon cross-checks, and PDF-specific answer markers.
+- `24_live_market_data_mcp_decision_gate.md`: required 西柚洞察 MCP gate for current market, competitor, keyword, trend, ranking, and expansion decisions; call logging, freshness, partial/blocked handling, and evidence boundaries.
+- `25_skill_first_decision_gate.md`: mandatory Skill-first loading order, reference selection, status reporting, conflict handling, and prohibition on giving ad advice from general memory outside the Skill.
 
 # Explicit Prohibitions
 
@@ -351,4 +357,8 @@ Before finalizing:
 - Reserve `confirmed_error` for claims with direct higher-quality counterevidence; preserve unresolved alternatives.
 - When source files are supplied, use `scripts/review_sources.py` and report `PASS`, `PARTIAL`, `FAIL`, or `NOT_READY` coverage honestly.
 - State confidence and missing data.
+- For any current market/competitor/keyword/trend/ranking/expansion decision, show `实时数据调用状态` and the MCP query scope; use `COMPLETE`, `PARTIAL`, `BLOCKED`, or `NOT_REQUIRED` honestly.
+- Never fabricate MCP tool names, fields, dates, records, or results; a failed or incomplete MCP call cannot be reported as validated data.
+- For any Amazon advertising optimization advice, show `Skill 使用状态`, the loaded Skill path, task-relevant references, and applied constraints; do not give advice before the Skill-first gate is satisfied.
+- If the Skill or required reference cannot be loaded, do not substitute generic advertising knowledge for the Skill; ask for the missing source or provide only diagnostic questions and reversible tests.
 - Keep recommendations tied to evidence and business objective.

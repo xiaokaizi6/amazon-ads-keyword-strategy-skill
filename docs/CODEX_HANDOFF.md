@@ -1,11 +1,17 @@
 # Codex 当前交接
 
 - 最后更新：2026-08-13
-- 当前分支：`main`
-- 最新已核对远端提交：`d302203a24d6483853f829310514fc63c9401647`
-- 最新任务记录：`docs/handoffs/2026-08-13-advanced-ads-pdf-live-review.md`
+- 当前分支：`agent/skill-first-mcp-decision-gates`
+- 最新已核对远端提交：`7d713bc3413d8b5158d8c21d7d122928a43be520`
+- 最新任务记录：`docs/handoffs/2026-08-13-skill-first-decision-gate.md`
 
 ## 当前状态
+
+本轮新增 Skill-first 广告决策门槛：任何广告优化、关键词、竞品、预算、竞价、否词、排名或生命周期建议，都必须先读取当前实际使用的 `SKILL.md` 和任务相关 References Map 文件；输出需显示 `Skill 使用状态`、实际 Skill 路径、已加载 reference 和应用约束。Skill 或必要 reference 无法加载时，只能给诊断问题、补数要求或可逆测试，不能凭通用经验直接给广告动作。新增 `references/25_skill_first_decision_gate.md` 和 T057 eval，并同步到 Codex 安装副本的 MCP/Skill-first 核心规则。
+
+本轮变更已提交为 `7d713bc3413d8b5158d8c21d7d122928a43be520`，推送至 `agent/skill-first-mcp-decision-gates`，并创建草稿 PR [#3](https://github.com/xiaokaizi6/amazon-ads-keyword-strategy-skill/pull/3)。
+
+本轮新增实时市场数据 MCP 决策门槛：涉及当前市场、竞品、关键词、需求、趋势、排名或放量决策时，必须先调用已安装的西柚洞察 MCP，记录真实 operation、站点、ASIN/关键词、请求/返回窗口、字段、新鲜度和缺失项。新增 `references/24_live_market_data_mcp_decision_gate.md`、T056 eval 和项目长期要求。MCP 只负责当前市场证据，不替代 Amazon 官方政策/功能文档、用户账户报告或项目讲义证据；调用失败或字段不完整时，只能输出 `PARTIAL`/`BLOCKED` 下的条件化方案或可逆低风险测试，不能给出强制提价、否词、加预算或拆活动决策。本轮仅修改 Skill 规则和评估文件，没有具体广告账户决策，因此未调用实时市场 MCP；当前会话工具列表也未暴露西柚操作，未据此声称已完成市场数据验证。
 
 项目已有 100 篇原始 Amazon 广告文章及分阶段生成的索引、section、提取记录、规则库、案例库、冲突库、噪声库和关键词库。现有 skill 已要求条件化建议并区分案例、规则、假设、评论和噪声。
 
