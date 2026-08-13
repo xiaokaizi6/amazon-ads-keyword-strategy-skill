@@ -3,3 +3,6 @@ __pycache__/
 
 # Local installer artifact; GitHub rejects files larger than 100 MB.
 tmp/libreoffice_install/*.msi
+
+# Local PDF rendering artifacts; source-review outputs keep only the audit metadata.
+tmp/pdfs/

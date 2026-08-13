@@ -35,6 +35,8 @@
 
 更早批次的 `ADV2-CLM-002` 等 `unresolved` 主张，以及 `CASE-ADV-*` 和 `SRC-3328e6e7662e-CASE-*` 案例继续保留，不能因本次新增资料而覆盖或删除。
 
+本次原始 PDF 现场复核的 `PDFLIVE-CLM-001`、`PDFLIVE-CLM-006`、`PDFLIVE-CLM-009`、`PDFLIVE-CLM-011`、`PDFLIVE-CLM-012`、`PDFLIVE-CLM-013`、`PDFLIVE-CLM-015`、`PDFLIVE-CLM-016`、`PDFLIVE-CLM-017` 为 `context_dependent`；`PDFLIVE-CLM-010` 为 `outdated`；`PDFLIVE-CLM-014` 将 75% 搜索结果相似度保留为 `unsupported`。完整 18 条主张和 4 条案例见 `data/processed/amazon_ads_skill/claim_review_advanced_ads_pdf_live_2026-08-13.jsonl` 与 `source_case_records_advanced_ads_pdf_live_2026-08-13.jsonl`。
+
 ## 触发提示
 
 用户问题命中上述主张或案例时，回答必须出现 `讲义案例提示`，并至少说明：

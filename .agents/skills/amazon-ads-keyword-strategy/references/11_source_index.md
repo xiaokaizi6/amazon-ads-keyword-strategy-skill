@@ -29,6 +29,10 @@ Evidence base generated from 100 markdown posts split into 2002 sections. The ex
 | `full_batch_claim_review_2026-08-13.jsonl` | Unified 781-claim review: corpus extracted records, all uploaded-source claims, and the original PDF coverage record. |
 | `full_batch_case_records_2026-08-13.jsonl` | Unified 36-case source-observation validation output. |
 | `source_validation_report_full_batch_2026-08-13.md` | Unified coverage report; all 108 source IDs checked, but binary user documents keep overall status `PARTIAL`. |
+| `source_manifest_advanced_ads_pdf_live_2026-08-13.jsonl` | Live manifest for the original 143-page image-only course PDF; SHA-256 and full-page manual review metadata retained. |
+| `advanced_ads_pdf_live_claims_2026-08-13.jsonl` / `claim_review_advanced_ads_pdf_live_2026-08-13.jsonl` | 18 page-located atomic claims from the live PDF review, with current-platform cross-checks and uncertainty states. |
+| `source_case_records_advanced_ads_pdf_live_2026-08-13.jsonl` | Four source-faithful PDF cases; same-family duplicates are retained for traceability but not counted as independent evidence. |
+| `source_validation_report_advanced_ads_pdf_live_2026-08-13.md` | Full 143-page render/review coverage report; `PARTIAL` because the PDF has no usable machine text layer. |
 
 ## High-Signal Source Clusters
 
@@ -46,6 +50,7 @@ Evidence base generated from 100 markdown posts split into 2002 sections. The ex
 | Launch policy risk | Preserve launch cases while blocking review/order/traffic manipulation. | `SRC-d9b87550b32a`, `references/19_pricing_promotion_launch_integration.md` |
 | Image-report placement and rank claims | Use placement/purchased-product cases diagnostically; do not guarantee organic rank. | `SRC-3d7548bc16d9`, `references/20_image_ad_report_integration.md` |
 | Unified full-batch audit | 100 project articles + 8 user files; 108 sources, 781 claims, 36 cases; machine readability is separate from manual review. | `data/processed/amazon_ads_skill/source_manifest_full_batch_2026-08-13.jsonl`, `data/processed/amazon_ads_skill/full_batch_claim_review_2026-08-13.jsonl`, `data/processed/amazon_ads_skill/source_validation_report_full_batch_2026-08-13.md`, `references/22_full_batch_review_2026-08-13.md` |
+| Live advanced-diagnosis PDF | 143-page visual review; report matrix, aggregation, targeting, negatives, keyword research, variants and lifecycle claims; current UI takes precedence over the PDF snapshot. | `SRC-3a9e4ddd5371`, `references/23_advanced_ads_pdf_live_review_2026-08-13.md` |
 
 ## Confidence Notes
 

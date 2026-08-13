@@ -88,6 +88,7 @@ Helpful but not always required:
 18c. Use `references/20_image_ad_report_integration.md` for the image-only advertising report; preserve its placement, purchased-product, budget, and TOS cases while keeping ranking causality and fixed thresholds conditional.
 18d. Use `references/21_disputed_uncertain_claim_retention.md` as the mandatory registry for all `disputed`, `unresolved`, `unsupported`, `outdated`, and `context_dependent` source claims; retain them with visible status markers even when they cannot enter `merged_rules.jsonl`.
 18e. Use `references/22_full_batch_review_2026-08-13.md` and the generated full-batch JSONL/report when the user asks whether all 100 project articles and all uploaded material were reviewed together. Distinguish machine readability from manual review and distinguish source coverage from factual support.
+18f. Use `references/23_advanced_ads_pdf_live_review_2026-08-13.md` and the `PDFLIVE-*` claim/case artifacts for direct questions about the 143-page advanced-diagnosis PDF. Treat the PDF as visually reviewed but machine-unreadable, keep its 2025-05 UI descriptions historical, and show `讲义案例提示` when a retained PDF claim or case matches the question.
 19. For every future source, retain all concrete decision-relevant cases in the source-case record layer described in `references/14_source_validation_and_conflict_protocol.md`; preserve source-faithful metrics, observations, stated explanation, and limitations even when the case cannot support a general rule.
 20. When answering a question materially related to a retained conditional claim or source case, proactively disclose its `来源状态` / case confidence, conditions, material differences, and validation boundary, even if the user did not explicitly ask about uncertainty.
 21. Produce a 7-day, 14-day, and 30-day action plan.
@@ -311,6 +312,7 @@ For a narrow question, use only the relevant sections. Do not fill unrelated sec
 - `20_image_ad_report_integration.md`: cross-validated image-only report, placement/purchased-product/budget cases, TOS warnings, and ranking-causality boundaries.
 - `21_disputed_uncertain_claim_retention.md`: mandatory registry and answer protocol for retaining disputed, unresolved, unsupported, outdated, and context-dependent claims.
 - `22_full_batch_review_2026-08-13.md`: unified full-batch review boundary, source/claim/case counts, coverage-versus-truth rules, and cross-validation conclusions.
+- `23_advanced_ads_pdf_live_review_2026-08-13.md`: live 143-page PDF review, 18 atomic claims, four source-faithful cases, page-level evidence boundaries, current Amazon cross-checks, and PDF-specific answer markers.
 
 # Explicit Prohibitions
 

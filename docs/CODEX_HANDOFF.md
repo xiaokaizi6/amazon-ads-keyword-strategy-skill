@@ -3,7 +3,7 @@
 - 最后更新：2026-08-13
 - 当前分支：`main`
 - 最新已核对远端提交：`d302203a24d6483853f829310514fc63c9401647`
-- 最新任务记录：`docs/handoffs/2026-08-13-skill-structure-compliance.md`
+- 最新任务记录：`docs/handoffs/2026-08-13-advanced-ads-pdf-live-review.md`
 
 ## 当前状态
 
@@ -26,6 +26,8 @@
 本轮已将 100 篇项目文章与对话内 8 个唯一用户文件（含原始课程 PDF）重新合并为同一批次，运行 `scripts/build_full_batch_audit.py` 生成 108 个来源、781 条主张和 36 条案例，再由 `review_sources.py --manifest-input` 统一校验。108 个来源均被引用，主张契约错误 0，案例契约错误 0；100 个 Markdown 来源可自动读取，8 个 DOCX/XLSX/PDF 已通过前序专用提取或图像检查完成人工阅读并在 manifest 标记 `manual_reviewed: true`。机器报告仍为 `PARTIAL`，仅表示默认自动解析器无法直接读取二进制文件。完整批次边界和结论见 `references/22_full_batch_review_2026-08-13.md` 与 `docs/handoffs/2026-08-13-full-batch-cross-audit.md`。
 
 本轮按 OpenAI Codex `skill-creator` 规范检查并优化 Skill 结构：新增 `agents/openai.yaml` UI 元数据；将维护者说明移出 Skill 目录，改存为 `docs/AMAZON_ADS_SKILL_MAINTAINER_GUIDE.md`；为超过 100 行的 reference 增加 Contents 导航；将 source-review/full-batch reference 补入 References Map；扩展 frontmatter description 以覆盖资料审查、原子主张、案例和冲突保留；把“所有问题都强制使用 11 节输出”改为完整诊断使用、窄问题按需使用，减少无关模板文本。Skill 主入口保持 500 行以内。
+
+本轮现场复核原始课程 PDF `亚马逊专题课-进阶广告诊断有优化全指导.pdf`：重新渲染并检查 143/143 页，确认 SHA-256 为 `3f75d0ed42cf8fd7e8818fa82beaf57d9d593cd01753a30b141e87054b7e86df`，PDF 为图片型且没有可用文本层。新增 18 条 PDF 专属原子主张和 4 条来源忠实案例，写入 `references/23_advanced_ads_pdf_live_review_2026-08-13.md` 及 `data/processed/amazon_ads_skill/*advanced_ads_pdf_live*` 产物。审查报告为 `PARTIAL`：人工页面覆盖完整，但同课改写不作为独立证据；2025-05 广告位界面被标为 `outdated`，75% 相似度被标为 `unsupported`，固定否词/预算/生命周期数字保留为 `context_dependent`，数学聚合与公式按边界标记为 `supported`。当前 Amazon 官方文档已作为时效性平台事实的复核入口，后续命中这些主张或案例必须显示 `讲义案例提示`。
 
 ## 已知工作区状态
 
@@ -53,7 +55,7 @@
 - 当前已完成进阶诊断讲义的单独主张审查：`data/processed/amazon_ads_skill/advanced_ads_claims.jsonl`、`claim_review_advanced_ads.jsonl`、`source_manifest_advanced_ads_review.jsonl` 和 `source_validation_advanced_ads_report.md`。报告为 `PARTIAL`，因为 DOCX 被自动清单器标记为二进制不可读，且项目 100 篇原文未逐条全部覆盖；内容本身已通过 OOXML 全文解析和人工交叉判断。
 - 最新整理版单独审查产物为 `advanced_ads_rewrite_v2_claims.jsonl`、`claim_review_advanced_ads_rewrite_v2.jsonl`、`source_manifest_advanced_ads_rewrite_v2.jsonl`、`source_case_records_advanced_ads_rewrite_v2.jsonl` 和 `source_validation_advanced_ads_rewrite_v2_report.md`。报告为 `PARTIAL`；22 条主张状态为 supported 7、context_dependent 11、unsupported 2、unresolved 2，6 条来源案例全部通过案例契约校验。
 - 新增五文件批次的审查产物为 `source_manifest_2026-08-13_new_bundle.jsonl`、`new_source_bundle_claim_review.jsonl`、`new_source_bundle_case_records.jsonl` 和 `source_validation_report_2026-08-13_new_bundle.md`。22 条主张和11条案例通过契约校验；报告为 `PARTIAL`，因为 DOCX/XLSX 自动读取器标记为不可读，且本批次没有把项目全部 100 篇原文重新作为 claims 输入。人工已读取上传文件，不能把该报告写成全项目 `PASS`。
-- 本轮讲义的单独来源清单为 `data/processed/amazon_ads_skill/source_manifest_advanced_ads_lecture.jsonl`，来源报告为 `data/processed/amazon_ads_skill/source_validation_advanced_ads_lecture.md`。脚本只把 PDF 识别为二进制 / 不支持的文本扩展名，故报告为 `NOT_READY`；实际内容已通过逐页渲染视觉阅读，未据此声称完成跨全库的主张验证。
+- 本轮讲义的历史单独来源清单为 `data/processed/amazon_ads_skill/source_manifest_advanced_ads_lecture.jsonl`，旧报告 `source_validation_advanced_ads_lecture.md` 仍保留其自动解析 `NOT_READY` 状态。现场复核的当前产物是 `source_manifest_advanced_ads_pdf_live_2026-08-13.jsonl`、`claim_review_advanced_ads_pdf_live_2026-08-13.jsonl`、`source_case_records_advanced_ads_pdf_live_2026-08-13.jsonl` 和 `source_validation_report_advanced_ads_pdf_live_2026-08-13.md`；后者记录完整人工页面覆盖但仍为 `PARTIAL`，不会把人工阅读夸大为机器可读或全部事实已被证明。
 - 本轮完整阅读用户提供的 `C:\Users\liuya\Downloads\亚马逊CPC广告打法知识体系全梳理v1_20260804(1).docx`：通过 OOXML 读取了全部非空段落、表格和附录对照表（文档自称整理 175 篇文章）。该文件不含图片媒体，主要内容为整理者对公式、SP/SB/SD 架构、广告报告、20 种打法和指标优化的文字总结。已生成 `data/processed/amazon_ads_skill/source_manifest_cpc_playbook.jsonl` 与 `data/processed/amazon_ads_skill/source_validation_cpc_playbook.md`；由于脚本默认不解析 DOCX，来源报告诚实保持 `NOT_READY`，但本轮已完成可读性结构化阅读。未将该文档的阈值、平台机制或打法升级为通用规则。
 - 当前学习结论：ACOS/ROAS/CPA/TACOS 等算式可作为待核对的数学定义；CTR/CVR/ACOS 健康值、广告与自然销售占比、TOS 溢价、自动/手动迁移阈值和预算百分比均属于经验或案例口径，需按站点、类目、阶段、目标和样本量验证；“质量得分扣费公式”、广告排名因果、3 个月流量扶持、功能名称/回溯窗口、叠词/马甲/海王等打法及 Prompts/SPV 等功能描述属于高风险或时效性主张，后续必须拆成原子主张并核对项目资料与 Amazon 官方来源。文档中的账户数据和 175 篇文章摘要只作为来源观察，不作为独立规则证据。
 - 前一份 CPC 讲义的 21 条 claim 状态为 supported 13、context_dependent 1、disputed 1、unresolved 5、unsupported 1。本轮进阶诊断讲义新增 21 条 claim；最新整理版再新增 22 条 claim（supported 7、context_dependent 11、unresolved 2、unsupported 2），本批次新增22条 claim及11条案例，并新增 `references/19_*`、`references/20_*`、T051/T052 eval。
