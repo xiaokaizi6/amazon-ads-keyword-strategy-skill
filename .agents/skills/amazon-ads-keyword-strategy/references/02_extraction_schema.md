@@ -1,5 +1,12 @@
 # Extraction Schema
 
+## Contents
+
+- [Record Shape](#record-shape)
+- [Field Definitions](#field-definitions)
+- [Allowed Values](#allowed-values)
+- [Record-Type Requirements](#record-type-requirements)
+
 This schema defines the JSONL contract for:
 
 ```text

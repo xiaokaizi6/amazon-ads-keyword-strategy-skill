@@ -1,6 +1,6 @@
 # Final Quality Review: Amazon Ads Keyword Strategy Skill
 
-- Review date: 2026-06-01
+- Review date: 2026-08-12
 - Scope: `.agents/skills/amazon-ads-keyword-strategy`
 - Validation command: `python ".agents/skills/amazon-ads-keyword-strategy/scripts/validate_outputs.py"`
 - Validation result: PASS, 0 errors, 0 warnings
@@ -8,7 +8,7 @@
 
 ## Overall Conclusion
 
-The skill is ready for use as an Amazon ads and keyword strategy diagnostic skill. It now has usable examples, a 40-case eval set, and an executable validation script that checks directory/file completeness, JSONL legality, required schemas, noise isolation, comment confidence, evidence quote length, eval coverage, reference presence, and example output format.
+The skill is ready for use as an Amazon ads and keyword strategy diagnostic skill. It has usable examples, a 45-case eval set, executable rebuild scripts for rules and cases, and a source-review workflow that inventories files and reports claim coverage without overstating certainty.
 
 The main operating principle is preserved: recommendations must be conditional, evidence-backed, and never based on ACOS alone.
 
@@ -17,7 +17,7 @@ The main operating principle is preserved: recommendations must be conditional, 
 | Area | Result | Notes |
 | --- | --- | --- |
 | SKILL.md invocation quality | PASS | Frontmatter has `name` and `description`; the body states when to use the skill, required inputs, workflow, record types, output format, references, prohibitions, and quality checklist. |
-| References coverage | PASS | References cover taxonomy, extraction schema, keyword classification, campaign structure, search-term optimization, product-stage strategy, conflict handling, metric thresholds, case library, noise filtering, and source index. |
+| References coverage | PASS | References cover taxonomy, extraction schema, keyword classification, campaign structure, search-term optimization, product-stage strategy, conflict handling, metric thresholds, case library, noise filtering, source index, source-validation protocol, and source-review schema. |
 | Advertising coverage | PASS | Campaign structure covers launch, growth, stable, seasonal peak/preheat, off-season, clearance, auto, exact, phrase, broad, ASIN targeting, defense, and competitor attack. |
 | Keyword strategy coverage | PASS | Keyword classification separates core terms, long-tail terms, competitor terms, defense terms, discovery terms, big terms, order-producing terms, and ranking target terms. |
 | Search-term workflow | PASS | Search-term logic includes add exact, negative exact, negative phrase, bid down, bid up, observe, and sample-size handling. |
@@ -33,8 +33,8 @@ The main operating principle is preserved: recommendations must be conditional, 
 | 中小词 vs 大词 | PASS | CASE003/CASE010 and eval T027 cover the risk that medium/small-term orders do not necessarily move big-word natural rank. |
 | Stage strategy | PASS | Launch, stable, seasonal preheat/peak, off-season, and clearance strategies are covered in references, examples, and evals. |
 | Examples | PASS | Four example files cover launch structure, search-term optimization, high ACOS with ranking improvement, and low ACOS with no ranking movement/high ad-share dependency. Output examples follow the 11-section skill format. |
-| Evals | PASS | `test_cases.jsonl` has 40 cases, exceeding the 35-case minimum, and covers all requested categories plus regression cases. |
-| Validation script | PASS | `validate_outputs.py` executes successfully and writes a structured Markdown report with file, line, field, reason, and fix suggestion for any issue. |
+| Evals | PASS | `test_cases.jsonl` has 45 cases, exceeding the 35-case minimum, and covers all requested categories plus regression cases. |
+| Validation script | PASS | `validate_outputs.py` executes successfully and checks the skill, processed schemas, optional source-review artifacts, and structured issue reporting. |
 
 ## Phase 12 Review
 
@@ -99,6 +99,6 @@ Current execution result is PASS.
 
 ## Residual Risk
 
-This review verifies artifact quality and structural correctness. It does not run live model-output scoring against every eval case. Future evaluation can add an automated runner that feeds each `user_input` to a model and checks `expected_must_include` / `expected_must_not_include` against actual responses.
+This review verifies artifact quality, rebuildability, and source-review contracts. It does not run live model-output scoring against every eval case. Future evaluation can add an automated runner that feeds each `user_input` to a model and checks `expected_must_include` / `expected_must_not_include` against actual responses. Source claim review remains evidence-assisted rather than an automatic truth classifier.
 
 The source corpus includes forum cases and comments, so recommendations should remain conditional and confidence-aware even when a pattern appears repeatedly.

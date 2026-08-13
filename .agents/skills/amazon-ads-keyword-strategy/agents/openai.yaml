@@ -1,0 +1,4 @@
+interface:
+  display_name: "Amazon Ads & Keyword Strategy"
+  short_description: "Evidence-based Amazon ads and keyword diagnosis"
+  default_prompt: "Use $amazon-ads-keyword-strategy to diagnose an Amazon advertising or keyword strategy problem with conditional, evidence-linked recommendations."

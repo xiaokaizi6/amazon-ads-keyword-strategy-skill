@@ -26,6 +26,14 @@ Evidence base: extracted records include repeated mentions of ACOS, CPC, CVR, na
 
 ## Diagnostic Combinations
 
+### 官方定义与经验阈值分离
+
+- ACOS and ROAS formulas are stable metric definitions: ACOS is ad spend divided by attributed ad revenue, while ROAS is attributed ad revenue divided by ad spend.
+- Amazon does not define one universal good ACOS. Break-even depends on the relevant profit/contribution margin and the campaign objective; the project must not promote the DOCX values such as `CTR >= 0.5%`, `CVR > 10%`, `ACOS <= 15%`, or `广告:自然 4:6` as universal health thresholds.
+- Any click, bid, placement, budget, or launch-day number from a lecture remains a source-specific test hypothesis unless category, marketplace, stage, goal, and sample evidence support it.
+
+Source: `references/16_cpc_playbook_integration.md` (CPC-CLM-001, CPC-CLM-002, CPC-CLM-013, CPC-CLM-014).
+
 ### Low ACOS + Weak Natural Rank
 
 - Check CPC, ad position, CTR, CVR, order volume, ad-order term versus target natural term.

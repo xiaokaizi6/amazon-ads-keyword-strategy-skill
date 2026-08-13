@@ -47,6 +47,8 @@ REQUIRED_SKILL_FILES = [
     Path("references/11_source_index.md"),
     Path("references/12_keyword_library_building.md"),
     Path("references/13_keyword_database_schema.md"),
+    Path("references/14_source_validation_and_conflict_protocol.md"),
+    Path("references/15_source_review_schema.md"),
     Path("examples/example_input_search_term_report.md"),
     Path("examples/example_output_ads_diagnosis.md"),
     Path("examples/example_output_keyword_strategy.md"),
@@ -54,9 +56,12 @@ REQUIRED_SKILL_FILES = [
     Path("evals/test_cases.jsonl"),
     Path("evals/expected_outputs.md"),
     Path("scripts/build_keyword_library.py"),
+    Path("scripts/build_rulebooks.py"),
+    Path("scripts/build_case_library.py"),
     Path("scripts/classify_keywords.py"),
     Path("scripts/update_keyword_library_from_ads.py"),
     Path("scripts/validate_outputs.py"),
+    Path("scripts/review_sources.py"),
 ]
 
 REQUIRED_PROCESSED_FILES = [
@@ -171,6 +176,77 @@ KEYWORD_METRIC_FIELDS = [
     "ad_rank",
 ]
 
+SOURCE_MANIFEST_FIELDS = [
+    "source_id",
+    "file_name",
+    "file_path",
+    "title",
+    "author_or_org",
+    "published_date",
+    "acquired_date",
+    "version",
+    "source_type",
+    "marketplace",
+    "ad_products",
+    "product_stages",
+    "is_first_party",
+    "evidence_cluster",
+    "content_sha256",
+    "byte_count",
+    "extension",
+    "readable",
+    "readability_issues",
+    "included_in_scope",
+]
+
+CLAIM_REVIEW_FIELDS = [
+    "claim_id",
+    "source_id",
+    "source_location",
+    "evidence_quote",
+    "normalized_claim",
+    "claim_type",
+    "status",
+    "confidence",
+    "checked_source_ids",
+    "supporting_evidence",
+    "opposing_evidence",
+    "missing_evidence",
+    "verification_test",
+    "reviewed_at",
+    "validation_errors",
+    "coverage",
+]
+
+SOURCE_CASE_RECORD_FIELDS = [
+    "case_id",
+    "source_id",
+    "source_location",
+    "evidence_quote",
+    "case_title",
+    "marketplace",
+    "product_stage",
+    "ad_objective",
+    "conditions",
+    "case_metrics",
+    "observed_outcome",
+    "author_explanation",
+    "action_taken",
+    "cross_validation_notes",
+    "case_confidence",
+    "reviewed_at",
+]
+
+CLAIM_STATUSES = {
+    "supported",
+    "confirmed_error",
+    "outdated",
+    "unsupported",
+    "context_dependent",
+    "disputed",
+    "unresolved",
+}
+
 EVAL_FIELDS = [
     "case_id",
     "user_input",
@@ -248,6 +324,7 @@ class Validator:
         self.check_eval_files()
         self.check_references()
         self.check_examples()
+        self.check_source_review_artifacts()
         self.write_report()
         return 1 if self.has_errors else 0
 
@@ -905,6 +982,214 @@ class Validator:
                         "Use the full 11-section output format from SKILL.md.",
                     )
         self.add_check("examples format and coverage", "pass" if ok else "fail")
+
+    def check_source_review_artifacts(self) -> None:
+        """Validate optional source-review outputs when a review has been run."""
+        manifest_path = self.processed_path(Path("source_manifest.jsonl"))
+        claim_path = self.processed_path(Path("claim_review.jsonl"))
+        source_case_path = self.processed_path(Path("source_case_records.jsonl"))
+        report_path = self.processed_path(Path("source_validation_report.md"))
+        if (
+            not manifest_path.exists()
+            and not claim_path.exists()
+            and not source_case_path.exists()
+            and not report_path.exists()
+        ):
+            self.add_check("source review artifacts", "not run")
+            return
+
+        ok = True
+        manifest_records = self.read_jsonl(manifest_path)
+        manifest_ids: set[str] = set()
+        if not manifest_path.is_file():
+            ok = False
+            self.add_issue(
+                "error",
+                manifest_path,
+                "-",
+                "__file__",
+                "Claim/source review artifacts exist without source_manifest.jsonl.",
+                "Run review_sources.py to create a source manifest first.",
+            )
+        for line_no, record in manifest_records:
+            missing = [field for field in SOURCE_MANIFEST_FIELDS if field not in record]
+            if missing:
+                ok = False
+                self.add_issue(
+                    "error",
+                    manifest_path,
+                    line_no,
+                    "fields",
+                    f"Source manifest record is missing fields: {', '.join(missing)}.",
+                    "Regenerate the manifest with review_sources.py.",
+                )
+            source_id = record.get("source_id")
+            if not isinstance(source_id, str) or not source_id:
+                ok = False
+                self.add_issue(
+                    "error",
+                    manifest_path,
+                    line_no,
+                    "source_id",
+                    "Source manifest source_id must be a non-empty string.",
+                    "Use a stable source ID generated from path and content hash.",
+                )
+            elif source_id in manifest_ids:
+                ok = False
+                self.add_issue(
+                    "error",
+                    manifest_path,
+                    line_no,
+                    "source_id",
+                    "Duplicate source_id in source manifest.",
+                    "Deduplicate source records while retaining evidence_cluster.",
+                )
+            else:
+                manifest_ids.add(source_id)
+
+        if claim_path.is_file():
+            if not report_path.is_file():
+                ok = False
+                self.add_issue(
+                    "error",
+                    report_path,
+                    "-",
+                    "__file__",
+                    "claim_review.jsonl exists without source_validation_report.md.",
+                    "Generate the coverage report with review_sources.py.",
+                )
+            for line_no, claim in self.read_jsonl(claim_path):
+                missing = [field for field in CLAIM_REVIEW_FIELDS if field not in claim]
+                if missing:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        claim_path,
+                        line_no,
+                        "fields",
+                        f"Claim review record is missing fields: {', '.join(missing)}.",
+                        "Regenerate claim reviews with the documented claim schema.",
+                    )
+                if claim.get("source_id") not in manifest_ids:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        claim_path,
+                        line_no,
+                        "source_id",
+                        "Claim references a source not present in source_manifest.jsonl.",
+                        "Add the source to the manifest or correct the claim source_id.",
+                    )
+                if claim.get("status") not in CLAIM_STATUSES:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        claim_path,
+                        line_no,
+                        "status",
+                        "Claim review has an invalid status.",
+                        "Use one of the documented source-review statuses.",
+                    )
+                if claim.get("status") == "confirmed_error":
+                    if not claim.get("opposing_evidence") or not claim.get("verification_test"):
+                        ok = False
+                        self.add_issue(
+                            "error",
+                            claim_path,
+                            line_no,
+                            "confirmed_error",
+                            "confirmed_error lacks direct opposing evidence or a verification test.",
+                            "Downgrade the status or add the required evidence fields.",
+                        )
+        elif report_path.is_file():
+            self.add_issue(
+                "warning",
+                report_path,
+                "-",
+                "claim_review",
+                "Source report exists without claim_review.jsonl; this can be valid NOT_READY state.",
+                "Supply atomic claims when claim-level review is ready.",
+            )
+
+        if source_case_path.is_file():
+            if not report_path.is_file():
+                ok = False
+                self.add_issue(
+                    "error",
+                    report_path,
+                    "-",
+                    "__file__",
+                    "source_case_records.jsonl exists without source_validation_report.md.",
+                    "Record the source-review coverage and extracted-case count with the case records.",
+                )
+            seen_case_ids: set[str] = set()
+            for line_no, case in self.read_jsonl(source_case_path):
+                missing = [field for field in SOURCE_CASE_RECORD_FIELDS if field not in case]
+                if missing:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        source_case_path,
+                        line_no,
+                        "fields",
+                        f"Source case record is missing fields: {', '.join(missing)}.",
+                        "Regenerate the source case record with the documented schema.",
+                    )
+                case_id = case.get("case_id")
+                if not isinstance(case_id, str) or not case_id:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        source_case_path,
+                        line_no,
+                        "case_id",
+                        "Source case record needs a non-empty stable case_id.",
+                        "Use a source-scoped case ID, such as SRC-abc123-CASE-001.",
+                    )
+                elif case_id in seen_case_ids:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        source_case_path,
+                        line_no,
+                        "case_id",
+                        "Duplicate case_id in source case records.",
+                        "Assign a unique source-scoped case ID.",
+                    )
+                else:
+                    seen_case_ids.add(case_id)
+                if case.get("source_id") not in manifest_ids:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        source_case_path,
+                        line_no,
+                        "source_id",
+                        "Source case references a source not present in source_manifest.jsonl.",
+                        "Add the source to the manifest or correct the case source_id.",
+                    )
+                if not isinstance(case.get("case_metrics"), dict):
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        source_case_path,
+                        line_no,
+                        "case_metrics",
+                        "case_metrics must be an object; use an empty object when unavailable.",
+                        "Keep source-faithful metrics in an object instead of inventing thresholds.",
+                    )
+                for field in ("observed_outcome", "author_explanation", "action_taken"):
+                    if not isinstance(case.get(field), str) or not case.get(field):
+                        ok = False
+                        self.add_issue(
+                            "error",
+                            source_case_path,
+                            line_no,
+                            field,
+                            "Source observation, explanation, and action must be separate non-empty strings; use unknown when absent.",
+                            "Record the source-faithful value or unknown without inferring missing details.",
+                        )
+        self.add_check("source review artifacts", "pass" if ok else "fail")
 
     def write_report(self) -> None:
         self.output_file.parent.mkdir(parents=True, exist_ok=True)

@@ -1,6 +1,6 @@
 ---
 name: amazon-ads-keyword-strategy
-description: Use this skill when analyzing Amazon advertising, keyword strategy, keyword library building, search term reports, competitor keyword data, Keepa trends, product lifecycle strategy, ACOS/TACOS optimization, ranking diagnosis, and launch-stage ad planning.
+description: Analyze and optimize Amazon advertising, keyword strategy, keyword libraries, search-term reports, competitor targeting, Keepa trends, product lifecycle campaigns, ACOS/TACOS, ranking diagnosis, launches, and seasonal planning. Also use for reviewing uploaded Amazon advertising documents, extracting atomic claims and cases, cross-validating sources, resolving evidence conflicts, and preserving disputed or conditional guidance.
 ---
 
 # Purpose
@@ -78,7 +78,19 @@ Helpful but not always required:
 12. Check whether ad-order terms match natural-rank target terms.
 13. Compare with case library only as a similarity anchor.
 14. Resolve conflicts conditionally using product stage, margin, budget, sample size, ad goal, natural-rank target, inventory, and keyword type.
-15. Produce a 7-day, 14-day, and 30-day action plan.
+15. When new lectures or files are supplied, apply `references/14_source_validation_and_conflict_protocol.md` before promoting any claim into the rule library.
+16. Use `scripts/review_sources.py` to create a source manifest and claim-level coverage report; do not create a claim review without atomic claim input.
+16a. When the user requests a full-corpus audit, run `scripts/build_full_batch_audit.py` first, then pass its mixed manifest to `review_sources.py --manifest-input`; report source coverage and claim status separately from truth claims.
+17. Use `references/16_cpc_playbook_integration.md` as the validated/conditional integration layer for the CPC playbook; it is not a replacement for the raw source or claim review.
+18. Use `references/17_advanced_ads_diagnosis_integration.md` for the advanced diagnosis lecture, its seat-cushion cases, and its conditional thresholds; cite `CASE-ADV-*` only as similarity anchors.
+18a. Use `references/18_advanced_ads_diagnosis_rewrite_v2_integration.md` for the second, more detailed rewrite of the same lecture PDF; treat `SRC-3328e6e7662e` as the same evidence family as the earlier rewrite, not independent corroboration.
+18b. Use `references/19_pricing_promotion_launch_integration.md` for the new strike-through pricing, promotions workbook, and launch workflow sources; treat review/order/traffic manipulation examples as `confirmed_error` risk evidence, not executable tactics.
+18c. Use `references/20_image_ad_report_integration.md` for the image-only advertising report; preserve its placement, purchased-product, budget, and TOS cases while keeping ranking causality and fixed thresholds conditional.
+18d. Use `references/21_disputed_uncertain_claim_retention.md` as the mandatory registry for all `disputed`, `unresolved`, `unsupported`, `outdated`, and `context_dependent` source claims; retain them with visible status markers even when they cannot enter `merged_rules.jsonl`.
+18e. Use `references/22_full_batch_review_2026-08-13.md` and the generated full-batch JSONL/report when the user asks whether all 100 project articles and all uploaded material were reviewed together. Distinguish machine readability from manual review and distinguish source coverage from factual support.
+19. For every future source, retain all concrete decision-relevant cases in the source-case record layer described in `references/14_source_validation_and_conflict_protocol.md`; preserve source-faithful metrics, observations, stated explanation, and limitations even when the case cannot support a general rule.
+20. When answering a question materially related to a retained conditional claim or source case, proactively disclose its `来源状态` / case confidence, conditions, material differences, and validation boundary, even if the user did not explicitly ask about uncertainty.
+21. Produce a 7-day, 14-day, and 30-day action plan.
 
 # Keyword Library Module
 
@@ -129,6 +141,8 @@ Important rules:
 # Case Handling
 
 Cases must stay separate from rules.
+
+For every newly supplied source, keep its concrete cases in the source-case record layer before deciding whether a case is similar enough to be added to the maintained case library. A case remains a source-faithful observation: its reported outcome, the author's explanation, and the action taken are separate fields. Cross-validation may qualify the explanation, but must not rewrite the observation or silently discard an inconvenient case.
 
 When using a case:
 
@@ -210,6 +224,42 @@ For every conflict:
 - state when to avoid the action,
 - keep case posts as support or counterexamples, not absolute rules.
 
+# New Source Validation
+
+Use `references/14_source_validation_and_conflict_protocol.md` whenever the user supplies lectures, documents, course notes, exports, or other knowledge sources.
+
+- Preserve the original source and create a source inventory before evaluating claims.
+- Cross-check material claims against all relevant project sources and all in-scope user-provided documents; record coverage and any unreadable or excluded files.
+- For time-sensitive platform facts and policies, verify against current first-party Amazon sources and record the verification date.
+- Do not call a claim wrong merely because it lacks evidence. Distinguish `confirmed_error`, `outdated`, `unsupported`, `context_dependent`, `disputed`, `unresolved`, and `supported`.
+- If evidence cannot resolve a conflict, retain all meaningful views and explain each approach, conditions, risks, missing data, and a bounded validation test.
+- Treat duplicated, syndicated, or mutually copied sources as one evidence cluster rather than independent confirmation.
+
+# Conditional Source Claims
+
+The skill must retain useful claims even when they are not universal rules. Use the claim status as an operating marker:
+
+- `supported`: may be used as a conditional rule when the recorded conditions match; cite the source and limitations.
+- `context_dependent`: may be used only after checking stage, marketplace, category, margin, budget, sample size, and objective; label it as conditional.
+- `disputed`: show the meaningful View A and View B, explain the conflict, and do not return one unconditional action.
+- `unresolved`: keep it as a diagnostic hypothesis or bounded test; do not state it as a platform fact or direct action.
+- `unsupported`: preserve it for audit and alternative thinking, but do not use it as the default recommendation or threshold.
+- `outdated`: retain historical context only and verify the current Amazon console/documentation before use.
+- `confirmed_error`: do not recommend it; retain the direct counterevidence and verification trail.
+
+Whenever a conditional source claim is used, the answer must include:
+
+1. `来源状态` and source location;
+2. applicable conditions and missing data;
+3. the action route, alternative route, or reason to avoid the action;
+4. a reversible validation window with success and stop criteria.
+
+Do not silently drop `disputed`, `unresolved`, or `unsupported` claims. Do not silently promote them into `merged_rules.jsonl` as universal `executable_rule` records. Use `references/16_cpc_playbook_integration.md` and `data/processed/amazon_ads_skill/claim_review.jsonl` as the conditional claim layer.
+
+All uncertainty states are part of the Skill knowledge base. Use `references/21_disputed_uncertain_claim_retention.md` and the batch claim-review JSONL files as the retention index. A claim may be marked uncertain and still must remain searchable, source-linked, and available for future comparison.
+
+When a user question matches a retained lecture case or conditional threshold, show a `讲义案例提示` marker, name the source status, and provide the matching conditions, alternative route, missing data, and reversible validation window. State the case ID/source location, case confidence, matching facts, material mismatches, and the boundary between reported observation and unverified causal interpretation. The advanced lecture's structured cases are in `data/processed/amazon_ads_skill/lecture_case_library_advanced_ads.jsonl`; do not silently convert them into universal rules.
+
 # Confidence Rules
 
 - `high`: rare; requires strong source evidence, concrete metrics, clear scope, and low contradiction.
@@ -221,7 +271,7 @@ For every conflict:
 
 # Output Format
 
-Always answer in this structure:
+For a full diagnosis, use this structure:
 
 1. 当前诊断
 2. 数据完整性检查
@@ -234,6 +284,8 @@ Always answer in this structure:
 9. 案例相似性提示
 10. 风险和例外
 11. 7 天 / 14 天 / 30 天行动计划
+
+For a narrow question, use only the relevant sections. Do not fill unrelated sections with generic text. For source-review tasks, prioritize source scope, claim status, evidence boundaries, case retention, coverage, and verification results instead of forcing an advertising diagnosis template.
 
 # References Map
 
@@ -250,6 +302,15 @@ Always answer in this structure:
 - `11_source_index.md`: source clusters and processed data map.
 - `12_keyword_library_building.md`: keyword library sources, sub-libraries, workflow, statuses, update cadence, and campaign assignment.
 - `13_keyword_database_schema.md`: keyword library JSONL/CSV fields, allowed values, metrics object, and update semantics.
+- `14_source_validation_and_conflict_protocol.md`: source inventory, claim-level cross-validation, error thresholds, uncertainty preservation, and coverage reporting.
+- `15_source_review_schema.md`: JSONL contracts and status rules for source manifests, claim reviews, and coverage reports.
+- `16_cpc_playbook_integration.md`: cross-validated integration of the user-provided CPC playbook, including supported definitions, conditional strategies, disputed ranking claims, and unresolved platform facts.
+- `17_advanced_ads_diagnosis_integration.md`: cross-validated integration of the advanced advertising diagnosis lecture, its four seat-cushion cases, source-status markers, and conditional thresholds.
+- `18_advanced_ads_diagnosis_rewrite_v2_integration.md`: second detailed rewrite of the same lecture PDF, including six source-faithful cases, aggregation rules, lifecycle examples, and v2 status markers.
+- `19_pricing_promotion_launch_integration.md`: cross-validated strike-through pricing, promotions, and launch workflow sources; includes policy-risk markers and compliant alternatives.
+- `20_image_ad_report_integration.md`: cross-validated image-only report, placement/purchased-product/budget cases, TOS warnings, and ranking-causality boundaries.
+- `21_disputed_uncertain_claim_retention.md`: mandatory registry and answer protocol for retaining disputed, unresolved, unsupported, outdated, and context-dependent claims.
+- `22_full_batch_review_2026-08-13.md`: unified full-batch review boundary, source/claim/case counts, coverage-versus-truth rules, and cross-validation conclusions.
 
 # Explicit Prohibitions
 
@@ -264,6 +325,9 @@ Always answer in this structure:
 - 不要把关键词分类等同于关键词库建立。
 - 不要把出单词和自然排名目标词混为一谈。
 - 冲突观点必须条件化处理。
+- 不要把“缺少支持”直接写成“已证明错误”。
+- 不要在没有覆盖记录时声称已检查全部项目资料。
+- 无法确定的不同观点不得静默删除。
 
 # Quality Checklist
 
@@ -281,5 +345,8 @@ Before finalizing:
 - Separate converting keywords from natural-rank target keywords.
 - If building a keyword library, include source, type, status, priority, metrics, and update cadence.
 - Resolve conflicts conditionally.
+- If new source material was supplied, record source coverage and claim status using the source-validation protocol.
+- Reserve `confirmed_error` for claims with direct higher-quality counterevidence; preserve unresolved alternatives.
+- When source files are supplied, use `scripts/review_sources.py` and report `PASS`, `PARTIAL`, `FAIL`, or `NOT_READY` coverage honestly.
 - State confidence and missing data.
 - Keep recommendations tied to evidence and business objective.
