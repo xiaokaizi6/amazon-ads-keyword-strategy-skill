@@ -27,6 +27,6 @@
 
 ## 发布状态
 
-- 已提交：`7d713bc3413d8b5158d8c21d7d122928a43be520`（`Add Skill-first decision gates`）。
-- 已推送分支：`agent/skill-first-mcp-decision-gates`。
-- 已创建草稿 PR：[ #3 ](https://github.com/xiaokaizi6/amazon-ads-keyword-strategy-skill/pull/3)。
+- 已通过 PR [#3](https://github.com/xiaokaizi6/amazon-ads-keyword-strategy-skill/pull/3) 合并到 `main`。
+- 合并提交：`dff050ac88dcbe26822cbf58a18a96f3af121a27`（`Merge Skill-first decision gates`）。
+- 发布分支 `agent/skill-first-mcp-decision-gates` 已删除。
