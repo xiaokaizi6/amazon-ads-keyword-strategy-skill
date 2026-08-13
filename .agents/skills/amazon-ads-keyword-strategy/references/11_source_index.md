@@ -33,6 +33,8 @@ Evidence base generated from 100 markdown posts split into 2002 sections. The ex
 | `advanced_ads_pdf_live_claims_2026-08-13.jsonl` / `claim_review_advanced_ads_pdf_live_2026-08-13.jsonl` | 18 page-located atomic claims from the live PDF review, with current-platform cross-checks and uncertainty states. |
 | `source_case_records_advanced_ads_pdf_live_2026-08-13.jsonl` | Four source-faithful PDF cases; same-family duplicates are retained for traceability but not counted as independent evidence. |
 | `source_validation_report_advanced_ads_pdf_live_2026-08-13.md` | Full 143-page render/review coverage report; `PARTIAL` because the PDF has no usable machine text layer. |
+| `24_live_market_data_mcp_decision_gate.md` | 西柚洞察 MCP live-data gate for current market, competitor, keyword, trend, ranking, and expansion decisions; includes query logging and blocked/partial rules. |
+| `25_skill_first_decision_gate.md` | Mandatory Skill-first loading order before Amazon advertising recommendations, reference selection, status reporting, and generic-advice prohibition. |
 
 ## High-Signal Source Clusters
 
