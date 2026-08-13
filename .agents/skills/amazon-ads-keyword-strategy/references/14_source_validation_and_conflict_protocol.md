@@ -1,5 +1,15 @@
 # Source Validation And Conflict Protocol
 
+## Contents
+
+- [适用范围](#1-适用范围)
+- [来源登记](#2-来源登记)
+- [主张拆分](#3-主张拆分)
+- [必须交叉验证的范围](#4-必须交叉验证的范围)
+- [判断状态](#6-判断状态)
+- [冲突处理](#7-冲突处理)
+- [面向用户的回答要求](#9-面向用户的回答要求)
+
 本协议用于处理用户后续提供的广告优化讲义、课程文件、文章、表格、截图转录和其他资料。目标不是选出一个听起来最合理的观点，而是建立可追溯、可复核、保留不确定性的主张审查流程。
 
 ## 1. 适用范围
@@ -38,6 +48,18 @@
 - 判断状态、置信度、复核日期
 
 不得把同一段中的多个因果、阈值和动作合成一个不可验证的大主张。
+
+## 3A. 案例提取与保留
+
+完整阅读新资料时，必须同时识别其中每个与广告、关键词、排名、预算或转化决策有关的具体案例；不能因为案例的解释尚未被证实、与既有观点冲突或不适合推广而省略。每个案例必须保留为独立的 `case_observation`，至少记录：
+
+- `case_id`、`source_id`、原文位置和短证据摘录；
+- 产品 / 站点 / 阶段 / 广告目标，以及可得的时间窗、预算、样本限制；
+- 来源忠实的指标、观察到的结果、作者提出的解释和实际动作；
+- 与项目案例库、规则和反例交叉比对后的相似点、关键差异和置信度；
+- 明确区分“来源观察”与“尚未验证的因果解释或建议”。
+
+建议将本批案例写入 `data/processed/amazon_ads_skill/source_case_records.jsonl`，而不是直接改写进无条件规则库。批次专用案例文件（例如已存在的 `lecture_case_library_advanced_ads.jsonl`）可以继续保留，但必须满足同样的可追溯字段和使用边界。只有资料完整、指标可追溯且适合作为长期诊断锚点的案例，才可在保留来源 ID 的前提下同步进入 `case_library.jsonl` 和 `references/09_case_library.md`；即使进入案例库也仍不是通用规则。没有可提取案例时，来源报告必须明确写 `0`，而非省略该检查。
 
 ## 4. 必须交叉验证的范围
 
@@ -80,6 +102,8 @@
 
 ## 7. 冲突处理
 
+争议、未决、证据不足、过时和条件化主张都属于需要保留的 Skill 知识，不得因为没有进入 `merged_rules.jsonl` 而被视为未上传。它们必须保留 claim ID、source ID、原文位置、状态、证据边界和验证方法；统一登记与回答规则见 `references/21_disputed_uncertain_claim_retention.md`。
+
 对于 `context_dependent`、`disputed` 或 `unresolved` 主张，全部有意义观点都要保留，并按以下结构输出：
 
 1. View A 与证据、来源、置信度。
@@ -99,10 +123,11 @@
 ```text
 data/processed/amazon_ads_skill/source_manifest.jsonl
 data/processed/amazon_ads_skill/claim_review.jsonl
+data/processed/amazon_ads_skill/source_case_records.jsonl
 data/processed/amazon_ads_skill/source_validation_report.md
 ```
 
-使用 `scripts/review_sources.py` 和 `references/15_source_review_schema.md` 生成上述产物。没有收到新资料或原子主张输入时，不要生成空的 `claim_review.jsonl`；仅需生成来源盘点时，报告状态必须是 `NOT_READY`。
+使用 `scripts/review_sources.py` 和 `references/15_source_review_schema.md` 生成来源盘点、主张审查和案例契约校验；案例记录由完整阅读后的人工结构化提取产生，脚本只校验来源与字段，不能臆测案例内容。没有收到新资料或原子主张输入时，不要生成空的 `claim_review.jsonl`；仅需生成来源盘点时，报告状态必须是 `NOT_READY`。如果资料已完整阅读，案例提取仍要记录实际提取数或明确记录未发现案例。
 
 ## 9. 面向用户的回答要求
 
@@ -114,6 +139,7 @@ data/processed/amazon_ads_skill/source_validation_report.md
 - 哪些存在条件差异或仍有争议；
 - 本轮实际检查了哪些来源，哪些没有检查；
 - 对不确定项，不同做法及其条件、风险和验证计划。
+- 当用户的问题触及已保留的条件化主张或案例时，主动提示其来源状态或案例置信度、适用边界、关键不匹配和验证方式；不能因用户没有问“证据强度”而省略。
 
 ## Common Mistakes
 
@@ -129,6 +155,7 @@ data/processed/amazon_ads_skill/source_validation_report.md
 - 来源清单、去重簇和覆盖范围已记录。
 - 重要说法已拆成原子主张并保留原文位置。
 - 支持与反对证据都已检索。
+- 每个决策相关案例已保留，或已明确记录未发现案例；案例观察与其因果解释没有混写。
 - 时效敏感的平台事实已核对当前一手来源并记录日期。
 - 判断状态符合定义，`confirmed_error` 有直接反证。
 - 不确定和冲突观点没有被删除。

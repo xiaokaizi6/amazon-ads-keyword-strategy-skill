@@ -1,2 +1,5 @@
 __pycache__/
 *.py[cod]
+
+# Local installer artifact; GitHub rejects files larger than 100 MB.
+tmp/libreoffice_install/*.msi

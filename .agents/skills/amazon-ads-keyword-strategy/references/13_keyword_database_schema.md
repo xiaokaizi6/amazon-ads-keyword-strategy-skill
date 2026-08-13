@@ -1,5 +1,14 @@
 # Keyword Database Schema
 
+## Contents
+
+- [Required Fields](#required-fields)
+- [Allowed Types and Statuses](#allowed-keyword-types)
+- [Metrics Object](#metrics-object)
+- [Example Record](#example-record)
+- [Update Semantics](#update-semantics)
+- [Quality Checklist](#quality-checklist)
+
 This file defines the `keyword_library.jsonl` record schema used by the Keyword Library Builder module.
 
 Default outputs:

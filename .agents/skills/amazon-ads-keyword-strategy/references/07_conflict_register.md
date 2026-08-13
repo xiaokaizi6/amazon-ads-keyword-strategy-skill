@@ -1,5 +1,11 @@
 # Conflict Register
 
+## Contents
+
+- [Index](#index)
+- [C001–C005 conflict decisions](#c001-低-acos-是否一定代表广告有效)
+- [Evidence Notes](#evidence-notes)
+
 This register stores conditional decision rules for common Amazon ads strategy conflicts. It does not declare one side universally correct.
 
 ## Index

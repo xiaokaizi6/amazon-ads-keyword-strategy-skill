@@ -1,5 +1,11 @@
 # Campaign Structure
 
+## Contents
+
+- [Stage-Based Structures](#stage-based-structures)
+- [Campaign Type Notes](#campaign-type-notes)
+- [Evidence Anchors](#evidence-anchors)
+
 Evidence base: normalized rules contain the most support for bidding/budget, ranking, keyword research, and campaign structure. Case evidence is strongest for ranking stalls, ad dependency, CPC pressure, and exact/auto/product-targeting interactions. Campaign structures below are decision frameworks, not universal defaults.
 
 ## Stage-Based Structures

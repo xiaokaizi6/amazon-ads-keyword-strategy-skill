@@ -1,5 +1,13 @@
 # Search Term Optimization
 
+## Contents
+
+- [搜索词报告诊断逻辑](#搜索词报告诊断逻辑)
+- [加精准逻辑](#加精准逻辑)
+- [否定与竞价动作](#否定精准逻辑)
+- [样本不足处理](#样本不足处理)
+- [高广告依赖诊断](#广告单占比过高的诊断逻辑)
+
 Evidence base: search-term logic is supported by keyword-research, bidding/budget, ranking, and conversion records. The extracted corpus contains both direct rules and counterexamples, so every action must be conditional.
 
 ## 搜索词报告诊断逻辑

@@ -9,11 +9,14 @@ Default inputs and outputs:
   source directory: data/raw/amazon_ads_articles
   manifest: data/processed/amazon_ads_skill/source_manifest.jsonl
   claim review: data/processed/amazon_ads_skill/claim_review.jsonl
+  source cases: data/processed/amazon_ads_skill/source_case_records.jsonl
   report: data/processed/amazon_ads_skill/source_validation_report.md
 
 Use ``--no-project-corpus --source-file <path>`` for a later user-supplied
-batch.  A claim file is optional; without it the report is ``NOT_READY`` and
-the claim-review output is not created.
+batch. Use ``--manifest-input <manifest.jsonl>`` when a prebuilt mixed-scope
+manifest must be reviewed without rebuilding it. Claim and human-extracted case files are optional; without a claim
+file the report remains ``NOT_READY`` for claim verification and no empty
+claim-review output is created.
 """
 
 from __future__ import annotations
@@ -31,6 +34,7 @@ from typing import Any, Iterable
 DEFAULT_SOURCE_DIR = Path("data/raw/amazon_ads_articles")
 DEFAULT_MANIFEST_OUTPUT = Path("data/processed/amazon_ads_skill/source_manifest.jsonl")
 DEFAULT_CLAIM_OUTPUT = Path("data/processed/amazon_ads_skill/claim_review.jsonl")
+DEFAULT_SOURCE_CASE_OUTPUT = Path("data/processed/amazon_ads_skill/source_case_records.jsonl")
 DEFAULT_REPORT_OUTPUT = Path("data/processed/amazon_ads_skill/source_validation_report.md")
 
 TEXT_EXTENSIONS = {
@@ -73,6 +77,25 @@ REQUIRED_CLAIM_FIELDS = {
     "reviewed_at",
 }
 
+REQUIRED_SOURCE_CASE_FIELDS = {
+    "case_id",
+    "source_id",
+    "source_location",
+    "evidence_quote",
+    "case_title",
+    "marketplace",
+    "product_stage",
+    "ad_objective",
+    "conditions",
+    "case_metrics",
+    "observed_outcome",
+    "author_explanation",
+    "action_taken",
+    "cross_validation_notes",
+    "case_confidence",
+    "reviewed_at",
+}
+
 
 def parse_args() -> argparse.Namespace:
     """Parse the source-review CLI."""
@@ -95,8 +118,19 @@ def parse_args() -> argparse.Namespace:
         help="Do not include data/raw/amazon_ads_articles by default.",
     )
     parser.add_argument("--claims-file", type=Path, help="Atomic claim JSONL to review.")
+    parser.add_argument(
+        "--manifest-input",
+        type=Path,
+        help="Use an existing manifest JSONL instead of rebuilding it from source paths.",
+    )
+    parser.add_argument(
+        "--cases-file",
+        type=Path,
+        help="Human-extracted, source-faithful case-observation JSONL to validate.",
+    )
     parser.add_argument("--manifest-output", type=Path, default=DEFAULT_MANIFEST_OUTPUT)
     parser.add_argument("--claim-output", type=Path, default=DEFAULT_CLAIM_OUTPUT)
+    parser.add_argument("--case-output", type=Path, default=DEFAULT_SOURCE_CASE_OUTPUT)
     parser.add_argument("--report-output", type=Path, default=DEFAULT_REPORT_OUTPUT)
     parser.add_argument("--source-type", default="user_document")
     parser.add_argument("--marketplace", default="unknown")
@@ -251,6 +285,9 @@ def validate_claims(
     """Validate claim contracts and calculate honest source coverage."""
     manifest_ids = {record["source_id"] for record in manifest}
     readable_ids = {record["source_id"] for record in manifest if record.get("readable")}
+    manual_reviewed_ids = {
+        record["source_id"] for record in manifest if record.get("manual_reviewed")
+    }
     reviewed: list[dict[str, Any]] = []
     checked_ids: set[str] = set()
     errors = 0
@@ -320,6 +357,9 @@ def validate_claims(
         "unreviewed_source_ids": unreviewed_ids,
         "unreadable_source_count": len(unreadable_ids),
         "unreadable_source_ids": unreadable_ids,
+        "manual_reviewed_source_count": len(manual_reviewed_ids),
+        "manual_reviewed_source_ids": sorted(manual_reviewed_ids),
+        "reviewable_source_count": len(readable_ids | manual_reviewed_ids),
         "validation_error_count": errors,
         "status": (
             "FAIL"
@@ -332,24 +372,78 @@ def validate_claims(
     return reviewed, coverage
 
 
+def validate_source_cases(
+    cases: list[dict[str, Any]], manifest: list[dict[str, Any]]
+) -> tuple[list[dict[str, Any]], int]:
+    """Validate human-extracted cases without inferring facts from source text."""
+    manifest_ids = {record["source_id"] for record in manifest}
+    reviewed: list[dict[str, Any]] = []
+    errors = 0
+    seen_case_ids: set[str] = set()
+
+    for case in cases:
+        row = dict(case)
+        row["validation_errors"] = []
+        missing_fields = sorted(REQUIRED_SOURCE_CASE_FIELDS - set(case))
+        if missing_fields:
+            row["validation_errors"].append(
+                {"code": "missing_fields", "fields": missing_fields}
+            )
+        case_id = case.get("case_id")
+        if not isinstance(case_id, str) or not case_id:
+            row["validation_errors"].append({"code": "missing_or_invalid_case_id"})
+        elif case_id in seen_case_ids:
+            row["validation_errors"].append(
+                {"code": "duplicate_case_id", "case_id": case_id}
+            )
+        else:
+            seen_case_ids.add(case_id)
+        if case.get("source_id") not in manifest_ids:
+            row["validation_errors"].append(
+                {"code": "unknown_source_id", "source_id": case.get("source_id")}
+            )
+        if not isinstance(case.get("case_metrics"), dict):
+            row["validation_errors"].append({"code": "case_metrics_must_be_object"})
+        for field in ("observed_outcome", "author_explanation", "action_taken"):
+            if not isinstance(case.get(field), str) or not case.get(field):
+                row["validation_errors"].append(
+                    {"code": "missing_source_faithful_case_field", "field": field}
+                )
+        errors += len(row["validation_errors"])
+        reviewed.append(row)
+    return reviewed, errors
+
+
 def write_report(
     path: Path,
     manifest: list[dict[str, Any]],
     claims: list[dict[str, Any]],
     coverage: dict[str, Any],
     claims_file: Path | None,
+    source_cases: list[dict[str, Any]],
+    cases_file: Path | None,
+    case_validation_errors: int,
 ) -> None:
     """Write a Markdown report that never overstates review coverage."""
     source_types = Counter(record.get("source_type", "unknown") for record in manifest)
+    machine_readable_count = sum(1 for record in manifest if record.get("readable"))
+    manual_reviewed_count = sum(1 for record in manifest if record.get("manual_reviewed"))
+    reviewable_count = sum(
+        1 for record in manifest if record.get("readable") or record.get("manual_reviewed")
+    )
     lines = [
         "# Source Validation Report",
         "",
         f"- Scope source count: {coverage['scope_source_count']}",
-        f"- Readable source count: {sum(1 for record in manifest if record.get('readable'))}",
+        f"- Machine-readable source count: {machine_readable_count}",
+        f"- Manually reviewed source count: {manual_reviewed_count}",
+        f"- Reviewable source count: {reviewable_count}",
         f"- Claim count: {coverage['claim_count']}",
         f"- Checked source count: {coverage['checked_source_count']}",
         f"- Validation errors: {coverage['validation_error_count']}",
-        f"- Status: **{coverage['status'] if claims_file else 'NOT_READY'}**",
+        f"- Source cases extracted: {len(source_cases) if cases_file else 'NOT RUN'}",
+        f"- Source case validation errors: {case_validation_errors if cases_file else 'NOT RUN'}",
+        f"- Status: **{'FAIL' if coverage['status'] == 'FAIL' else coverage['status'] if claims_file else 'NOT_READY'}**",
         "",
         "## Source Types",
         "",
@@ -357,6 +451,7 @@ def write_report(
     lines.extend(f"- {key}: {value}" for key, value in sorted(source_types.items()))
     lines.extend(["", "## Review Inputs", ""])
     lines.append(f"- Claims file: `{claims_file.as_posix()}`" if claims_file else "- Claims file: NOT RUN")
+    lines.append(f"- Source cases file: `{cases_file.as_posix()}`" if cases_file else "- Source cases file: NOT RUN")
     lines.append("- Claim review is not a text-only truth classifier; statuses require explicit evidence references.")
     lines.extend(["", "## Coverage", ""])
     if coverage["unreviewed_source_ids"]:
@@ -365,6 +460,10 @@ def write_report(
         lines.append("- Unreviewed source IDs: none")
     if coverage["unreadable_source_ids"]:
         lines.append(f"- Unreadable source IDs: {', '.join(coverage['unreadable_source_ids'][:50])}")
+        lines.append(
+            "- Unreadable here means the default automated parser could not read the binary file; "
+            "a source may still be manually reviewed and marked `manual_reviewed: true`."
+        )
     else:
         lines.append("- Unreadable source IDs: none")
     lines.extend(["", "## Claim Status Counts", ""])
@@ -377,6 +476,8 @@ def write_report(
                 "No claim file was supplied. The manifest is an inventory only; no claim has been verified.",
             ]
         )
+    if cases_file and not source_cases:
+        lines.extend(["", "No decision-relevant source cases were supplied; extracted-case count is 0."])
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -385,14 +486,14 @@ def main() -> int:
     """Inventory sources and optionally validate claims."""
     args = parse_args()
     source_dirs = list(args.source_dir or [])
-    if not args.no_project_corpus and not source_dirs and not args.source_file:
+    if not args.no_project_corpus and not source_dirs and not args.source_file and not args.manifest_input:
         source_dirs = [DEFAULT_SOURCE_DIR]
     source_files = list(args.source_file or [])
-    paths = iter_source_paths(source_dirs, source_files)
-    if not paths:
-        raise ValueError("No source files found; provide --source-dir or --source-file")
+    paths = iter_source_paths(source_dirs, source_files) if not args.manifest_input else []
+    if not paths and not args.manifest_input:
+        raise ValueError("No source files found; provide --source-dir, --source-file, or --manifest-input")
 
-    manifest = build_manifest(paths, args)
+    manifest = load_jsonl(args.manifest_input) if args.manifest_input else build_manifest(paths, args)
     write_jsonl(args.manifest_output, manifest)
     claims: list[dict[str, Any]] = []
     coverage = {
@@ -406,16 +507,41 @@ def main() -> int:
         "validation_error_count": 0,
         "status": "NOT_READY",
     }
+    source_cases: list[dict[str, Any]] = []
+    case_validation_errors = 0
     if args.claims_file:
         claims = load_jsonl(args.claims_file)
         claims, coverage = validate_claims(claims, manifest)
         write_jsonl(args.claim_output, claims)
-    write_report(args.report_output, manifest, claims, coverage, args.claims_file)
+    if args.cases_file:
+        source_cases = load_jsonl(args.cases_file)
+        source_cases, case_validation_errors = validate_source_cases(source_cases, manifest)
+        if source_cases:
+            write_jsonl(args.case_output, source_cases)
+        if case_validation_errors:
+            coverage["validation_error_count"] += case_validation_errors
+            coverage["status"] = "FAIL"
+    write_report(
+        args.report_output,
+        manifest,
+        claims,
+        coverage,
+        args.claims_file,
+        source_cases,
+        args.cases_file,
+        case_validation_errors,
+    )
     print(f"Wrote {len(manifest)} source records to {args.manifest_output}")
     if args.claims_file:
         print(f"Wrote {len(claims)} claim reviews to {args.claim_output}")
     else:
         print("Claim review not run: no --claims-file supplied")
+    if args.cases_file and source_cases:
+        print(f"Wrote {len(source_cases)} source case records to {args.case_output}")
+    elif args.cases_file:
+        print("Source case review ran: 0 source cases supplied; no empty output created")
+    else:
+        print("Source case review not run: no --cases-file supplied")
     print(f"Wrote source validation report to {args.report_output}")
     return 0 if coverage["status"] in {"PASS", "PARTIAL", "NOT_READY"} else 1
 

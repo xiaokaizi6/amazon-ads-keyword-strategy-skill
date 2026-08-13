@@ -1,6 +1,6 @@
 # Amazon Ads Skill Validation Report
 
-- Generated at: 2026-08-12T18:36:07
+- Generated at: 2026-08-13T09:24:31
 - Skill directory: `.agents/skills/amazon-ads-keyword-strategy`
 - Processed directory: `data/processed/amazon_ads_skill`
 - Status: **PASS**
@@ -21,7 +21,7 @@
 | eval set | pass |
 | references non-empty | pass |
 | examples format and coverage | pass |
-| source review artifacts | not run |
+| source review artifacts | pass |
 
 ## Issues
 

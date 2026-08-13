@@ -218,6 +218,25 @@ CLAIM_REVIEW_FIELDS = [
     "coverage",
 ]
 
+SOURCE_CASE_RECORD_FIELDS = [
+    "case_id",
+    "source_id",
+    "source_location",
+    "evidence_quote",
+    "case_title",
+    "marketplace",
+    "product_stage",
+    "ad_objective",
+    "conditions",
+    "case_metrics",
+    "observed_outcome",
+    "author_explanation",
+    "action_taken",
+    "cross_validation_notes",
+    "case_confidence",
+    "reviewed_at",
+]
+
 CLAIM_STATUSES = {
     "supported",
     "confirmed_error",
@@ -968,8 +987,14 @@ class Validator:
         """Validate optional source-review outputs when a review has been run."""
         manifest_path = self.processed_path(Path("source_manifest.jsonl"))
         claim_path = self.processed_path(Path("claim_review.jsonl"))
+        source_case_path = self.processed_path(Path("source_case_records.jsonl"))
         report_path = self.processed_path(Path("source_validation_report.md"))
-        if not manifest_path.exists() and not claim_path.exists() and not report_path.exists():
+        if (
+            not manifest_path.exists()
+            and not claim_path.exists()
+            and not source_case_path.exists()
+            and not report_path.exists()
+        ):
             self.add_check("source review artifacts", "not run")
             return
 
@@ -1085,6 +1110,85 @@ class Validator:
                 "Source report exists without claim_review.jsonl; this can be valid NOT_READY state.",
                 "Supply atomic claims when claim-level review is ready.",
             )
+
+        if source_case_path.is_file():
+            if not report_path.is_file():
+                ok = False
+                self.add_issue(
+                    "error",
+                    report_path,
+                    "-",
+                    "__file__",
+                    "source_case_records.jsonl exists without source_validation_report.md.",
+                    "Record the source-review coverage and extracted-case count with the case records.",
+                )
+            seen_case_ids: set[str] = set()
+            for line_no, case in self.read_jsonl(source_case_path):
+                missing = [field for field in SOURCE_CASE_RECORD_FIELDS if field not in case]
+                if missing:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        source_case_path,
+                        line_no,
+                        "fields",
+                        f"Source case record is missing fields: {', '.join(missing)}.",
+                        "Regenerate the source case record with the documented schema.",
+                    )
+                case_id = case.get("case_id")
+                if not isinstance(case_id, str) or not case_id:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        source_case_path,
+                        line_no,
+                        "case_id",
+                        "Source case record needs a non-empty stable case_id.",
+                        "Use a source-scoped case ID, such as SRC-abc123-CASE-001.",
+                    )
+                elif case_id in seen_case_ids:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        source_case_path,
+                        line_no,
+                        "case_id",
+                        "Duplicate case_id in source case records.",
+                        "Assign a unique source-scoped case ID.",
+                    )
+                else:
+                    seen_case_ids.add(case_id)
+                if case.get("source_id") not in manifest_ids:
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        source_case_path,
+                        line_no,
+                        "source_id",
+                        "Source case references a source not present in source_manifest.jsonl.",
+                        "Add the source to the manifest or correct the case source_id.",
+                    )
+                if not isinstance(case.get("case_metrics"), dict):
+                    ok = False
+                    self.add_issue(
+                        "error",
+                        source_case_path,
+                        line_no,
+                        "case_metrics",
+                        "case_metrics must be an object; use an empty object when unavailable.",
+                        "Keep source-faithful metrics in an object instead of inventing thresholds.",
+                    )
+                for field in ("observed_outcome", "author_explanation", "action_taken"):
+                    if not isinstance(case.get(field), str) or not case.get(field):
+                        ok = False
+                        self.add_issue(
+                            "error",
+                            source_case_path,
+                            line_no,
+                            field,
+                            "Source observation, explanation, and action must be separate non-empty strings; use unknown when absent.",
+                            "Record the source-faithful value or unknown without inferring missing details.",
+                        )
         self.add_check("source review artifacts", "pass" if ok else "fail")
 
     def write_report(self) -> None:

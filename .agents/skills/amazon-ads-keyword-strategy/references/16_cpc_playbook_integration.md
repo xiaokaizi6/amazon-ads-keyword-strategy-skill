@@ -1,5 +1,12 @@
 # CPC Playbook Integration and Cross-Validation
 
+## Contents
+
+- [审查范围和状态](#审查范围和状态)
+- [可纳入 skill 的稳定内容](#可纳入-skill-的稳定内容)
+- [必须条件化或保留争议的内容](#必须条件化或保留争议的内容)
+- [条件化主张的使用模板](#条件化主张的使用模板)
+
 本文件把用户提供的《亚马逊CPC广告打法知识体系全梳理v1_20260804(1).docx》纳入 skill，但不把整理稿当成 Amazon 官方规则。原子主张审查记录位于：
 
 - `data/processed/amazon_ads_skill/cpc_playbook_claims.jsonl`

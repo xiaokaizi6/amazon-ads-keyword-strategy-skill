@@ -101,6 +101,9 @@ The answer must not contain:
 | 出单词与自然排名目标词区分 | T027, T029, T035, T043 |
 | 新讲义主张交叉验证 | T044, T045, T046 |
 | 条件化保留争议观点 | T047 |
+| 进阶诊断讲义案例和条件阈值 | T048 |
+| 同一讲义第二份整理版、来源案例层和非独立证据 | T050 |
+| 新来源案例保留与主动提示 | T049 |
 
 ## T046: CPC Playbook Claims Must Be Conditional
 
@@ -131,3 +134,132 @@ The answer must not:
 - 静默删除争议观点
 - 将未验证观点写成通用规则
 - 给出没有来源状态的确定性结论
+
+## T048: Advanced Diagnosis Lecture Must Remain Conditional
+
+The answer must include:
+
+- `讲义案例提示` and the four `CASE-ADV-*` case anchors
+- `context_dependent`, `unsupported`, and `unresolved` source-status markers
+- 20/100 clicks as conditional checkpoints, not automatic commands
+- inventory 1.5/3 months and placement +20%/−10% explicitly marked as lecture examples, not universal thresholds
+- a reversible validation window, missing data, and alternative routes
+
+The answer must not:
+
+- call 1.5 months a platform inventory rule
+- make +20% placement or −10% overall bid the default action
+- say every account must wait for 100 clicks before a negative action
+- call 2–6 months a platform support period
+
+## T050: Second Rewrite Must Not Be Double-Counted
+
+The answer must include:
+
+- `讲义案例提示` and the fact that `SRC-3328e6e7662e` is another rewrite of the same lecture PDF, not independent corroboration
+- source-case records for the 2-click/1-order example and the placement/budget examples
+- `context_dependent`, `unsupported`, and `unresolved` markers for thresholds, UI windows, and lifecycle timing
+- aggregation of parent/child metrics by totals before recomputing rates
+- conditions, missing data, conservative route, test route, and a reversible validation window
+
+The answer must not:
+
+- call 2× gross margin a platform rule
+- make ACOS ≤20% imply a mandatory 50% budget increase
+- call BSR Top20–100 an official requirement
+- call 2 weeks × 4 rounds a platform support period
+
+## T049: Retain New-Source Cases With Their Evidence Boundary
+
+The answer must include:
+
+- `source_case_records.jsonl` and `case_observation`
+- source-faithful observation, author explanation, and action as separate fields
+- case confidence, matching facts, material mismatches, and source location
+- a proactive `讲义案例提示` when a future diagnosis materially relates to the retained case
+- clear statement that a case is not a universal executable rule
+
+The answer must not:
+
+- delete a meaningful case because its explanation is unsupported or conflicts with a rule
+- turn a source case into a universal threshold or causal claim
+- silently omit its evidence boundary in a related future answer
+
+## T051: Pricing, Promotion, and Launch Sources Must Stay Conditional
+
+The answer must include:
+
+- `SRC-f564d5134e68`, `SRC-2c0a32e82d29`, and `SRC-d9b87550b32a` with source status and evidence-cluster limits
+- reference-price validation, current marketplace/eligibility checks, and explicit rejection of fixed “10 orders/one week” rules
+- promotion stacking and formula assumptions, with checkout verification rather than universal stacking claims
+- `confirmed_error`/policy-risk markers for fake orders, review compensation, review clubs, related-account price manipulation, and artificial add-to-cart/wishlist
+- a compliant alternative route and a reversible test window for conditional or unsupported launch parameters
+
+The answer must not:
+
+- recommend review manipulation, fake orders, related-account reference-price manufacturing, or ranking/traffic manipulation
+- present 20%-25% margin, 5% Coupon, ACOS50%, or `Price×ACOS×CR` as universal rules
+- treat old Deal/Prime fees, windows, or discount percentages as current without marketplace/date verification
+
+## T052: Image-Only Ad Report Must Preserve Cases and Ranking Uncertainty
+
+The answer must include:
+
+- `SRC-3d7548bc16d9` and the fact that the Word source was manually read from 12 images while the automated manifest remains `readable:false`
+- `SRC-3d7548bc16d9-CASE-001` through `CASE-004` as source observations with confidence and missing denominators
+- `disputed`/`unsupported`/`context_dependent` markers for exact-match ranking claims, TOS +900%, 50%-60% ACOS, +10%-20% placement, and 70% budget-online thresholds
+- Purchased Product and Placement as diagnostic hypotheses, not automatic campaign changes
+- matching conditions, mismatches, alternative route, and reversible validation window
+
+The answer must not:
+
+- claim exact keywords or TOS guarantee organic ranking
+- copy +900% TOS, fixed $0.02/$0.2 bids, or 1-2-click stop rules as defaults
+- call a single image case or fixed online percentage a platform rule
+
+## T053: Disputed and Uncertain Content Must Remain in the Skill
+
+The answer must include:
+
+- explicit retention of `disputed`, `unresolved`, `unsupported`, `outdated`, and `context_dependent` claims
+- source ID, claim ID, original location, conditions, missing evidence, and verification test
+- `references/21_disputed_uncertain_claim_retention.md` and the claim-review JSONL as the retention layer
+- `references/22_full_batch_review_2026-08-13.md` as the unified-batch coverage/truth boundary
+- a clear distinction between “retained in the Skill” and “promoted into `merged_rules.jsonl`”
+
+The answer must not:
+
+- delete or silently ignore a claim because it lacks support or conflicts with another source
+- rewrite a disputed view as a universal rule
+- claim that a claim is absent from the Skill merely because it is not in `merged_rules.jsonl`
+
+## T054: Full Corpus and Uploaded Materials Must Share One Audit Batch
+
+The answer must include:
+
+- one unified manifest covering 100 project articles plus all in-scope uploaded documents
+- one unified claim review and one unified source-case review, with checked and unreviewed source IDs
+- conservative status assignment for corpus records rather than treating extracted article records as proven facts
+- an honest `PARTIAL`/`PASS`/`NOT_READY` result and explicit unreadable/visual-review limitations
+
+The answer must not:
+
+- run separate reports and call them one full-batch review
+- claim all 100 articles were factually validated merely because their source IDs are present
+- hide A069/manual extraction gaps, binary document limitations, or the distinction between coverage and truth verification
+
+## T055: Skill Structure and Progressive Disclosure
+
+The answer must include:
+
+- `SKILL.md` as the only required execution entry with `name` and `description` frontmatter
+- `agents/openai.yaml` as UI metadata, when the skill is intended for Codex discovery
+- references loaded on demand through a direct References Map rather than copying every long source into `SKILL.md`
+- a distinction between full-diagnosis output and narrow/source-review output
+- structural validation with `quick_validate.py` and project validation with `validate_outputs.py`
+
+The answer must not:
+
+- claim that `README.md` is required for Codex skill discovery
+- force an unrelated narrow question into all 11 diagnosis sections
+- claim that structural validation proves model answer quality

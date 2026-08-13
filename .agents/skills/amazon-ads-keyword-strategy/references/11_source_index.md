@@ -17,6 +17,18 @@ Evidence base generated from 100 markdown posts split into 2002 sections. The ex
 | `source_manifest.jsonl` | Source inventory with content hashes, evidence clusters, and readability limits; generated when source review is run. |
 | `claim_review.jsonl` | Claim-level review records; generated only when an atomic claims input is supplied. |
 | `source_validation_report.md` | Coverage and review-status report; `NOT_READY` is valid before claims are supplied. |
+| `source_manifest_advanced_ads_review.jsonl` / `claim_review_advanced_ads.jsonl` | Separate review artifacts for the advanced diagnosis lecture; current coverage is `PARTIAL`. |
+| `lecture_case_library_advanced_ads.jsonl` | Four retained lecture cases (`CASE-ADV-001` to `CASE-ADV-004`), kept separate from generated universal rules. |
+| `source_case_records_advanced_ads_rewrite_v2.jsonl` | Six source-faithful cases from the second rewrite of the same lecture PDF; validated separately and not independent evidence. |
+| `source_manifest_2026-08-13_new_bundle.jsonl` | Five-file user-source inventory for the 2026-08-13 batch; DOCX/XLSX are manually read but remain `readable:false` to reflect the script limitation. |
+| `new_source_bundle_claim_review.jsonl` | 22 atomic claims covering pricing, promotion, launch, and image-only ad-report materials. |
+| `new_source_bundle_case_records.jsonl` | 11 source-faithful cases from the batch; risk cases remain separate from executable rules. |
+| `source_validation_report_2026-08-13_new_bundle.md` | Batch coverage report; `PARTIAL` because the automated manifest cannot parse the binary files and full project-corpus claims were not re-run in this batch. |
+| `21_disputed_uncertain_claim_retention.md` | Central retention registry for all disputed, unresolved, unsupported, outdated, and context-dependent claims; these are retained knowledge, not silently discarded content. |
+| `source_manifest_full_batch_2026-08-13.jsonl` | Unified 108-source manifest: 100 project articles plus 8 uploaded documents, including the original course PDF. |
+| `full_batch_claim_review_2026-08-13.jsonl` | Unified 781-claim review: corpus extracted records, all uploaded-source claims, and the original PDF coverage record. |
+| `full_batch_case_records_2026-08-13.jsonl` | Unified 36-case source-observation validation output. |
+| `source_validation_report_full_batch_2026-08-13.md` | Unified coverage report; all 108 source IDs checked, but binary user documents keep overall status `PARTIAL`. |
 
 ## High-Signal Source Clusters
 
@@ -29,6 +41,11 @@ Evidence base generated from 100 markdown posts split into 2002 sections. The ex
 | Product/ASIN targeting | Compare competitor targeting, CPC, page placement, and conversion. | A001, A080, A098 |
 | Seasonal product timing | Preheat, peak, and compressed optimization windows. | A002, A003, A005, A006 |
 | Noise-heavy comment threads | Filter account links, social replies, thanks, off-topic talk. | A004, A020, A075 |
+| Pricing/reference-price integrity | Validate List Price/Typical Price and reject manufactured anchors. | `SRC-f564d5134e68`, `references/19_pricing_promotion_launch_integration.md` |
+| Promotion/event eligibility | Treat stacking, fees, windows, and discount percentages as time/market dependent. | `SRC-2c0a32e82d29`, `references/19_pricing_promotion_launch_integration.md` |
+| Launch policy risk | Preserve launch cases while blocking review/order/traffic manipulation. | `SRC-d9b87550b32a`, `references/19_pricing_promotion_launch_integration.md` |
+| Image-report placement and rank claims | Use placement/purchased-product cases diagnostically; do not guarantee organic rank. | `SRC-3d7548bc16d9`, `references/20_image_ad_report_integration.md` |
+| Unified full-batch audit | 100 project articles + 8 user files; 108 sources, 781 claims, 36 cases; machine readability is separate from manual review. | `data/processed/amazon_ads_skill/source_manifest_full_batch_2026-08-13.jsonl`, `data/processed/amazon_ads_skill/full_batch_claim_review_2026-08-13.jsonl`, `data/processed/amazon_ads_skill/source_validation_report_full_batch_2026-08-13.md`, `references/22_full_batch_review_2026-08-13.md` |
 
 ## Confidence Notes
 
