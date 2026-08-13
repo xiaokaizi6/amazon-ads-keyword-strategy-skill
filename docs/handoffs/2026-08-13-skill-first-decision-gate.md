@@ -25,6 +25,8 @@
 
 任何广告优化问题先读取 `SKILL.md` 和任务相关 reference，并在回答中标注 Skill 使用状态。若 Skill 不可读、版本冲突无法解决或关键 reference 缺失，应停止强动作建议，先报告阻塞并提出补充/同步或可逆测试方案。实时市场数据仍按 `references/24_live_market_data_mcp_decision_gate.md` 调用西柚洞察 MCP。
 
-## 未完成
+## 发布状态
 
-- 未提交或推送 GitHub。
+- 已提交：`7d713bc3413d8b5158d8c21d7d122928a43be520`（`Add Skill-first decision gates`）。
+- 已推送分支：`agent/skill-first-mcp-decision-gates`。
+- 已创建草稿 PR：[ #3 ](https://github.com/xiaokaizi6/amazon-ads-keyword-strategy-skill/pull/3)。

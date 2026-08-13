@@ -27,4 +27,4 @@
 ## 未完成
 
 - 已将本轮 MCP 决策门槛的核心 SKILL.md 指令和 `references/24_live_market_data_mcp_decision_gate.md` 同步到 `C:\Users\liuya\.codex\skills\ads_skill\skills\amazon-ads-keyword-strategy` 安装副本；该目录仍不是本仓库 Git 追踪路径，后续完整 Skill 版本升级时应继续采用明确的安装/同步流程，避免两份 Skill 漂移。
-- 未提交或推送 GitHub。
+- 后续已随 `7d713bc3413d8b5158d8c21d7d122928a43be520` 提交并推送到 `agent/skill-first-mcp-decision-gates`，草稿 PR：[ #3 ](https://github.com/xiaokaizi6/amazon-ads-keyword-strategy-skill/pull/3)。
