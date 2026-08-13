@@ -1,5 +1,13 @@
 # Keyword Library Building
 
+## Contents
+
+- [Core Principle](#core-principle)
+- [Required Sub-Libraries](#required-sub-libraries)
+- [Keyword Sources](#keyword-sources)
+- [Building Workflow](#building-workflow)
+- [Keyword Status Rules](#keyword-status-rules)
+
 关键词分类回答的是“这个词属于什么类型”。关键词库建立回答的是“这些词从哪里来、怎么筛、怎么验证、怎么沉淀、怎么进入广告结构、怎么更新”。两者必须分开处理。
 
 ## Core Principle

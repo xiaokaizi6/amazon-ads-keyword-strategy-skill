@@ -1,6 +1,14 @@
 # Case Library
 
-Evidence base: `case_library.jsonl` contains 15 extracted case observations. Cases are not rules. They are comparison anchors for diagnosis, counterexamples, and similarity checks.
+## Contents
+
+- [High-Value Cases](#high-value-cases)
+- [Case Similarity Signals](#case-similarity-signals)
+- [How To Use Cases](#how-to-use-cases)
+
+Evidence base: `case_library.jsonl` contains 15 extracted case observations. New user-source cases first remain in `source_case_records.jsonl` or an equivalently structured, batch-specific case file with source location, observation, claimed explanation, and cross-validation boundary; only durable diagnostic anchors are additionally summarized here. Cases are not rules. They are comparison anchors for diagnosis, counterexamples, and similarity checks.
+
+Cases and claims with `disputed`, `unresolved`, `unsupported`, `outdated`, or `context_dependent` status remain valid retained knowledge even when they are not promoted into `case_library.jsonl` or `merged_rules.jsonl`; see `references/21_disputed_uncertain_claim_retention.md`.
 
 ## High-Value Cases
 
@@ -77,6 +85,7 @@ Evidence base: `case_library.jsonl` contains 15 extracted case observations. Cas
 3. Do not convert a single case into a universal recommendation.
 4. If the case is supported by comments only, mark it `low confidence`.
 5. When a case conflicts with a rule, use conflict register conditions.
+6. When a retained case is materially relevant, proactively state its case confidence, matching facts, and material mismatches; distinguish reported observation from unverified causal explanation.
 
 ## Common Mistakes
 
@@ -84,6 +93,53 @@ Evidence base: `case_library.jsonl` contains 15 extracted case observations. Cas
 - Ignoring product stage, margin, and keyword type when comparing.
 - Matching only ACOS while ignoring CPC, CVR, ad order share, and natural rank.
 - Using weak comments as case facts.
+- Dropping a case because its explanation conflicts with the current skill instead of preserving the observation and marking the explanation boundary.
+
+## Supplemental Lecture Cases: 进阶广告诊断讲义
+
+The structured records for these cases are in `data/processed/amazon_ads_skill/lecture_case_library_advanced_ads.jsonl`; the source-level review is in `references/17_advanced_ads_diagnosis_integration.md`.
+
+- `CASE-ADV-001` / `CASE-ADV-002`: seat-cushion A/B cases where ACOS/TACOS exceed the lecture's 30% teaching margin. Use to prioritize funnel diagnosis, never as universal ACOS cutoffs.
+- `CASE-ADV-003`: seat-cushion C/D cases with weak conversion. Use to check listing, price, reviews, variants, competitiveness, and traffic match alongside ads.
+- `CASE-ADV-004`: 20-click screening, 100-click higher-confidence example, and placement bid examples. Use only as conditional test parameters.
+
+When a user asks about these patterns, display the `讲义案例提示` marker, source status, matching/mismatching metrics, missing data, and a reversible test window.
+
+## Supplemental Lecture Cases: 文字整理版（1）
+
+The second rewrite of the same lecture PDF is not independent evidence. Its six source-faithful cases are validated in `data/processed/amazon_ads_skill/source_case_records_advanced_ads_rewrite_v2.jsonl` and summarized in `references/18_advanced_ads_diagnosis_rewrite_v2_integration.md`.
+
+- `SRC-3328e6e7662e-CASE-001`: 2 clicks / 1 order for `office chair cushion`; small-sample signal only.
+- `SRC-3328e6e7662e-CASE-002`: four diagnostic patterns covering high spend/loss, low inventory, low data, and mismatched traffic.
+- `SRC-3328e6e7662e-CASE-003`: outdoor-cushion keyword research exercise with explicit attributes; do not infer product facts.
+- `SRC-3328e6e7662e-CASE-004`: placement and budget percentage examples; unsupported as defaults.
+- `SRC-3328e6e7662e-CASE-005`: test, seasonal, and clearance timing examples; conditional stage parameters.
+- `SRC-3328e6e7662e-CASE-006`: inventory-month and 2× gross-margin reference examples; not platform thresholds.
+
+Use the same `讲义案例提示` protocol and always distinguish the source observation from the author's explanation.
+
+## Supplemental Source Cases: 定价、促销与新品资料
+
+These cases are preserved in `data/processed/amazon_ads_skill/new_source_bundle_case_records.jsonl` and are not executable rules. The claim statuses are in `new_source_bundle_claim_review.jsonl`.
+
+- `SRC-f564d5134e68-CASE-001/002`: inflated reference-price and fixed-order-count strike-through tactics; `low confidence`, policy-risk/unsupported. Never recommend related-account orders or fixed “10 orders/one week” thresholds.
+- `SRC-2c0a32e82d29-CASE-001/002`: promotion stacking and event-price reverse calculations; use only to explain assumptions, then verify current eligibility and checkout math.
+- `SRC-d9b87550b32a-CASE-001`: fixed launch budgets/bids/ACOS50%; `medium` case completeness but not a universal threshold.
+- `SRC-d9b87550b32a-CASE-002`: review compensation, fake orders, related accounts, and artificial behavior; `low confidence` as a performance case and `confirmed_error` as a policy route. Preserve only as risk evidence.
+- `SRC-d9b87550b32a-CASE-003`: SD custom bid formula; unsupported hypothesis.
+
+If a user asks about strike-through price formation, review targets, fake orders, or launch ACOS thresholds, display `讲义案例提示` and state the source status, policy boundary, compliant alternative, and reversible test window.
+
+## Supplemental Source Cases: 图片版广告报告
+
+The image-only report cases are preserved in the same batch file and summarized in `references/20_image_ad_report_integration.md`:
+
+- `SRC-3d7548bc16d9-CASE-001`: position-level CTR/CVR/order differences; use for placement diagnosis, not fixed bid percentages.
+- `SRC-3d7548bc16d9-CASE-002`: advertised ASIN `QW` to purchased ASIN `RL` (~9 units); use as a cross-sell hypothesis only.
+- `SRC-3d7548bc16d9-CASE-003`: three campaigns' online-time values; no evidence for a universal 70% threshold.
+- `SRC-3d7548bc16d9-CASE-004`: TOS +900% and 1-2-click stop rule; low-confidence high-risk counterexample, never a default.
+
+When the question involves exact-match ranking, TOS 100%-200%/900%, placement scaling, or low-ACOS budget increases, display `讲义案例提示`, compare against CASE001/CASE009/CASE012/CASE015, and separate reported observations from unverified causal explanations.
 
 ## Quality Checklist
 

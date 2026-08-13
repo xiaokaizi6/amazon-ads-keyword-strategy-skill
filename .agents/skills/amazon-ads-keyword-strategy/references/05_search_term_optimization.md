@@ -1,5 +1,13 @@
 # Search Term Optimization
 
+## Contents
+
+- [搜索词报告诊断逻辑](#搜索词报告诊断逻辑)
+- [加精准逻辑](#加精准逻辑)
+- [否定与竞价动作](#否定精准逻辑)
+- [样本不足处理](#样本不足处理)
+- [高广告依赖诊断](#广告单占比过高的诊断逻辑)
+
 Evidence base: search-term logic is supported by keyword-research, bidding/budget, ranking, and conversion records. The extracted corpus contains both direct rules and counterexamples, so every action must be conditional.
 
 ## 搜索词报告诊断逻辑
@@ -16,6 +24,14 @@ For each search term, inspect:
 - natural rank movement for the same term.
 
 Do not judge a term only by ACOS. Low ACOS may come from low CPC or low volume; high ACOS may be acceptable during rank-push or launch if total goals are improving.
+
+### 官方报告边界与否词检查点
+
+- Amazon 官方说明 Sponsored Products search term report 只列出至少产生一次广告点击的搜索词；零点击展示应回到 targeting/placement/campaign 数据诊断。
+- Amazon 官方建议在添加 negative target 前至少观察 20 次点击。项目将其作为 review checkpoint，而不是跨类目、客单价和转化周期通用的自动否词阈值。
+- 20 次点击之后仍要结合相关性、预期 CVR、CPC、毛利、产品阶段和广告目标；战略排名词或高客单低频产品可先降价/隔离测试。
+
+Source: `references/16_cpc_playbook_integration.md` (CPC-CLM-007, CPC-CLM-021; Amazon Ads official pages checked 2026-08-12).
 
 ## 加精准逻辑
 

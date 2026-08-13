@@ -73,6 +73,7 @@ Evidence base: the data supports stage-dependent decisions, especially for new l
 - New launch can tolerate more data cost, but only with budget boundaries.
 - Stable phase should not accept high ad dependency without natural-order diagnosis.
 - Seasonal phase requires timing discipline; late data collection is often too slow.
+- Do not assume a universal three-month Amazon traffic-support window. Treat the DOCX timeline as a launch hypothesis and verify impression share, CVR, total orders, TACOS, organic rank, inventory, and objective by marketplace/category cohort.
 - Cases are comparisons, not rules. CASE001/CASE002 show ranking stalls; CASE010/CASE011 show budget and targeting pressure in a competitive category.
 
 ## Common Mistakes

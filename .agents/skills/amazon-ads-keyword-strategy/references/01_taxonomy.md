@@ -1,5 +1,12 @@
 # Taxonomy
 
+## Contents
+
+- [Extraction Unit](#extraction-unit)
+- [Record Types](#record-types)
+- [Topic Taxonomy](#topic-taxonomy)
+- [Confidence](#confidence)
+
 This taxonomy defines what can become an extracted strategy record from Amazon ads and keyword strategy source posts.
 
 The extractor must not reduce source material to generic "rules" only. It must preserve case data, diagnostic uncertainty, questions, actionable rules, counterexamples, comment signals, and irrelevant noise so later phases can separate case libraries, rule candidates, and low-value comments without losing context.
