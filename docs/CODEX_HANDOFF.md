@@ -13,6 +13,8 @@
 
 本轮已把 20 个新增/更新的 Skill 规则、脚本、全文层、案例索引和 eval 同步到桌面安装副本 `C:\Users\liuya\.codex\skills\ads_skill\skills\amazon-ads-keyword-strategy`。桌面副本的 20/20 文件哈希一致、108/108 覆盖清单路径均可定位、48 条案例唯一，并通过 `quick_validate.py`。项目版验证真实结果：覆盖/案例 JSONL Python 解析与字段断言 `PASS`；`quick_validate.py` `PASS`；62 条 eval JSONL 的唯一 ID/T062 检查 `PASS`；`git diff --check` `PASS`（仅 CRLF 警告）。未重新进行 Word 视觉渲染 QA；其因缺少 LibreOffice/`soffice` 的 `BLOCKED` 状态不影响本次内容检索审计。
 
+2026-08-19 已按用户授权直接发布至 GitHub `main`，未创建分支或 PR。提交 `925f49bc56b0202b4ad9162d69dd9ed4b0e9175a`（`Integrate 108-source evidence pack`）已推送至 `origin/main`；143 页原始 PDF（149,818,945 bytes）由 Git LFS 上传成功。未提交 `tmp/` 与根目录 `outputs/` 的临时/交付副本；其余 Skill 资料包、检索层、处理产物与交接记录均在该提交范围内。
+
 2026-08-18 用户明确知识问答目标：不需要查看原 PDF 的 PNG、截图或 Word 视觉渲染；只需要在后续问题中得到结论、上传资料背景、是否命中上传案例、结论理由和来源/适用边界。已新增 Skill `18j`、`references/27_portable_108_evidence_pack.md` 的 `User Knowledge-Answer Priority` 及 T061 eval。对上传资料的窄问题应先给 `结论`，再按 `资料背景`、`是否命中上传案例`、`结论理由`、`来源状态与适用边界` 回答；只列本次实际命中的来源，不要求用户先查看 PNG/OCR/Word。内部仍可在需要核对精确表格、截图、公式或低置信度 OCR 时回查原件，但不能用“视觉 QA 未完成”代替业务结论。
 
 2026-08-18 已从 143 页图片型 `SRC-3a9e4ddd5371` 原 PDF 生成可搜索的 OCR 派生 Word：`outputs/亚马逊专题课-进阶广告诊断有优化全指导-OCR文字检索版.docx`。全量 OCR JSONL 为 `data/processed/amazon_ads_skill/advanced_ads_pdf_ocr_full_2026-08-18.jsonl`，连续覆盖 143/143 页、10,245 行、119,644 个字符，无空页；716 条低置信度 OCR 行原样保留而未静默修正。派生 Word 与 JSONL 已随 Skill 复制到 `assets/derivatives/` 和 `assets/knowledge/`，并以 `advanced_ads_pdf_ocr_derivative_manifest_2026-08-18.json` 记录原 PDF、派生物哈希、页数和使用边界。`references/26_full_source_materials.md`、source index 和 T060 已更新：OCR 仅是页码可检索的派生层，表格、截图、公式、数字、专有名词及低置信度文字必须回查原 PDF 页，原 PDF 仍是唯一内容权威。

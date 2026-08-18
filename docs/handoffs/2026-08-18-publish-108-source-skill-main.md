@@ -20,3 +20,9 @@
 
 - 发布前检查 Skill/桌面副本覆盖与结构校验、JSONL 解析和 `git diff --check`。
 - 提交和推送仅在 `main` 执行；不创建分支、不创建 PR。
+
+## 结果
+
+- 已提交并推送 `main`：`925f49bc56b0202b4ad9162d69dd9ed4b0e9175a`（`Integrate 108-source evidence pack`）。
+- Git LFS 已成功上传原始 PDF：149,818,945 bytes；远端分支由 `3b276a0` 前进至 `925f49b`。
+- 初次传输因失效的本机代理 `127.0.0.1:7897` 挂起并超时；清空 `ALL_PROXY`、`HTTP_PROXY`、`HTTPS_PROXY` 后直连 GitHub 成功。该代理未作为仓库配置写入。
