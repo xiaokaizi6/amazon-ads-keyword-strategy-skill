@@ -297,3 +297,81 @@ The answer must not:
 - claim to have followed the Skill without loading it
 - treat `merged_rules.jsonl` as the only Skill knowledge layer
 - bypass the Skill-first gate because the user requested a short or direct answer
+
+## T058: Full Source Content, Cases, And Author Reasoning
+
+When a user asks for the CPC playbook or advanced-diagnosis PDF beyond a short conclusion, the answer must include:
+
+- `references/26_full_source_materials.md` and the relevant `SRC-*` source ID;
+- a specific DOCX body node or PDF page/claim/case location;
+- separate `来源观察`, `作者思路/解释`, and reviewed source status;
+- the original asset as the complete-content authority and the searchable JSONL/review layer as a retrieval aid;
+- an explicit boundary that source cases and numeric thresholds are not automatic executable rules.
+
+The answer must not:
+
+- claim that a claim/case summary replaces the original source content;
+- turn author commentary or a worked example into a universal Amazon platform fact;
+- omit source status when using an empirical threshold, causal claim, or historical UI detail.
+
+## T059: Portable 108-Source Background Must Show Actual Evidence
+
+The answer must include:
+
+- `references/27_portable_108_evidence_pack.md` and the 108-source scope (100 project articles plus 8 user documents);
+- actual matched source ID/file and claim/case/location, rather than a generic claim that the pack was used;
+- separate source observation, author reasoning/explanation, reviewed status, conclusion basis, and applicability boundary;
+- a statement that original assets are complete-content authority and JSONL is a retrieval/review aid;
+- an honest no-direct-match boundary when the pack does not support the requested conclusion.
+
+The answer must not:
+
+- list all 108 sources as if every one directly supports the answer;
+- convert a case, author explanation, or numeric threshold into a universal rule;
+- claim the binary-document `PARTIAL` review state means the material was unread or that all claims are proven.
+
+## T060: Image-Only PDF OCR Must Preserve Page-Level Source Authority
+
+The answer must include:
+
+- `SRC-3a9e4ddd5371`, the original PDF page, and `references/26_full_source_materials.md` when using the OCR derivative;
+- a clear `OCR 派生文本` marker and the distinction between a retrieval aid and original-source authority;
+- a warning to verify tables, screenshots, formulas, numbers, proper nouns, or low-confidence OCR text against the original PDF page.
+
+The answer must not:
+
+- cite OCR text as if it were verified verbatim original text;
+- silently fix uncertain OCR wording or use it as a universal advertising rule;
+- claim that OCR makes the image-only PDF automatically machine-verified.
+
+## T061: Uploaded-Material Questions Must Answer With Background And Reasons
+
+The answer must include:
+
+- a direct conclusion before lengthy process detail;
+- actual matched uploaded-source background and location;
+- `是否命中上传案例`, including case ID and material match/mismatch or an honest `未命中具体案例`;
+- the conclusion reason, separating source observation, author explanation, and reviewed conclusion;
+- source status and applicability boundary.
+
+The answer must not:
+
+- require the user to inspect PNGs, screenshots, OCR intermediates, or Word visual QA before receiving the conclusion;
+- present all uploaded materials as direct proof when only one source/case was actually matched;
+- turn a source case or author threshold into a universal advertising action.
+
+## T062: 108-Source Questions Must Use Full Retrieval And Detailed Case Background
+
+The answer must include:
+
+- `references/28_full_content_retrieval_coverage_108_2026-08-18.md` when relying on the full pack;
+- the 108/108 retrieval-coverage scope and the actual matched source/content location;
+- a search of the detailed case-background index and, if matched, case ID, conditions, metrics, observation, author explanation, action/unknown action, and transfer boundary;
+- an honest `未命中具体案例` when no matching retained case exists;
+- an OCR/original-source boundary for image, PDF, table, formula, number, or low-confidence text evidence.
+
+The answer must not:
+
+- assert that all lecture claims are verified merely because all files are retrievable;
+- use a case title alone as its background or turn a case into a default action;
+- call a file integrated when its audit status is `incomplete`.

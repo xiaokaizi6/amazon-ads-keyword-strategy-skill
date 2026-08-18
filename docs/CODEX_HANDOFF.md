@@ -1,11 +1,33 @@
 # Codex 当前交接
 
-- 最后更新：2026-08-13
+- 最后更新：2026-08-18
 - 当前分支：`main`
 - 最新已核对远端提交：`dff050ac88dcbe26822cbf58a18a96f3af121a27`
-- 最新任务记录：`docs/handoffs/2026-08-13-skill-first-decision-gate.md`
+- 最新任务记录：`docs/handoffs/2026-08-18-108-full-content-retrieval-audit.md`
 
 ## 当前状态
+
+2026-08-18 已按“可检索内容覆盖”而非仅文件数量复审 108 份资料。`assets/knowledge/full_content_coverage_108_2026-08-18.jsonl` 对 portable manifest 的 100 篇项目文章和 8 份用户资料逐一验证：108/108 为 `available_with_source_boundaries`、无 `validation_issues`。覆盖层包括 2,002 个文章分段、CPC Word 168 个正文/表格节点、原 PDF 143 页 OCR、两份进阶诊断 Word 的 194/79 个节点、图片广告报告 12 张嵌入图 OCR、划线价 Word 的 64 个节点+11 图 OCR、折扣 Excel 1,097 个单元格+1 图 OCR，以及新品流程 Excel 309 个单元格。原件仍保留在 `assets/source_materials/` 并是内容权威；OCR 仅为检索定位层，精确表格、图片、数字、公式及低置信度内容必须回查原件。
+
+新增 `assets/knowledge/portable_case_background_index_2026-08-18.jsonl`，合并且去重 48 条来源忠实案例（原统一批次 36 条、CPC 原件 8 条、原 PDF 4 条）。每条保留 source ID/位置、指标、来源观察、作者解释、动作或 unknown 与交叉验证边界，供后续回答给出详细案例背景。新增 `references/28_full_content_retrieval_coverage_108_2026-08-18.md`、Skill `18k`、T062 eval 及可重复运行的 XLSX 全单元格导出、Office 嵌入媒体 OCR、覆盖审计与案例索引脚本。后续相关问题须先检索实际匹配的全文层与案例索引，按“结论—资料背景—是否命中上传案例—结论理由—来源状态/适用边界”回答；没有相似案例必须写 `未命中具体案例`，不得以 108 个文件均可检索暗示其中所有观点已证实。
+
+本轮已把 20 个新增/更新的 Skill 规则、脚本、全文层、案例索引和 eval 同步到桌面安装副本 `C:\Users\liuya\.codex\skills\ads_skill\skills\amazon-ads-keyword-strategy`。桌面副本的 20/20 文件哈希一致、108/108 覆盖清单路径均可定位、48 条案例唯一，并通过 `quick_validate.py`。项目版验证真实结果：覆盖/案例 JSONL Python 解析与字段断言 `PASS`；`quick_validate.py` `PASS`；62 条 eval JSONL 的唯一 ID/T062 检查 `PASS`；`git diff --check` `PASS`（仅 CRLF 警告）。未重新进行 Word 视觉渲染 QA；其因缺少 LibreOffice/`soffice` 的 `BLOCKED` 状态不影响本次内容检索审计。
+
+2026-08-18 用户明确知识问答目标：不需要查看原 PDF 的 PNG、截图或 Word 视觉渲染；只需要在后续问题中得到结论、上传资料背景、是否命中上传案例、结论理由和来源/适用边界。已新增 Skill `18j`、`references/27_portable_108_evidence_pack.md` 的 `User Knowledge-Answer Priority` 及 T061 eval。对上传资料的窄问题应先给 `结论`，再按 `资料背景`、`是否命中上传案例`、`结论理由`、`来源状态与适用边界` 回答；只列本次实际命中的来源，不要求用户先查看 PNG/OCR/Word。内部仍可在需要核对精确表格、截图、公式或低置信度 OCR 时回查原件，但不能用“视觉 QA 未完成”代替业务结论。
+
+2026-08-18 已从 143 页图片型 `SRC-3a9e4ddd5371` 原 PDF 生成可搜索的 OCR 派生 Word：`outputs/亚马逊专题课-进阶广告诊断有优化全指导-OCR文字检索版.docx`。全量 OCR JSONL 为 `data/processed/amazon_ads_skill/advanced_ads_pdf_ocr_full_2026-08-18.jsonl`，连续覆盖 143/143 页、10,245 行、119,644 个字符，无空页；716 条低置信度 OCR 行原样保留而未静默修正。派生 Word 与 JSONL 已随 Skill 复制到 `assets/derivatives/` 和 `assets/knowledge/`，并以 `advanced_ads_pdf_ocr_derivative_manifest_2026-08-18.json` 记录原 PDF、派生物哈希、页数和使用边界。`references/26_full_source_materials.md`、source index 和 T060 已更新：OCR 仅是页码可检索的派生层，表格、截图、公式、数字、专有名词及低置信度文字必须回查原 PDF 页，原 PDF 仍是唯一内容权威。
+
+新 Word 的结构检查通过（10,391 段、143 个连续“原 PDF 第 N 页”标题）；Documents Skill 标准视觉渲染仍因无 LibreOffice/`soffice` 而 `BLOCKED`，没有 PNG，不得表述为 Word 版式已视觉通过。原 PDF 的先前 143/143 页人工视觉审阅不等于这份新 Word 的渲染 QA。
+
+2026-08-17 已复核 CPC Word 视觉渲染的依赖链：`pdf2image 1.17.0` 和 Poppler (`pdftoppm` / `pdftocairo`) 现已可用，故原先 `ModuleNotFoundError: pdf2image` 已解决。但 Documents Skill 的标准 `render_docx.py` 重新执行后明确因 `FileNotFoundError [WinError 2]` 无法启动 `soffice` 而停止，未产生页面 PNG；视觉 QA 仍是 `BLOCKED`，绝不能写为通过。官方 LibreOffice 26.2.5.2 安装包可由 WinGet 定位，但本轮下载/安装没有完成；本机无可用 Word 注册或 `WINWORD.EXE` 后备。下一次应先成功安装并验证 `C:\Program Files\LibreOffice\program\soffice.exe --version`，再用标准渲染器生成 PNG 并逐页检查。
+
+2026-08-17 已将统一批次的 **108 份来源**制作成项目版与桌面 Codex 安装副本均可离线读取的证据包：100 篇项目文章放入 `assets/source_materials/project_articles/`，8 份用户资料保留为原件（6 份其余上传文件在 `user_uploads/`，CPC Word 与 143 页 PDF 保持在 `source_materials/` 根目录）。`assets/knowledge/portable_108_source_manifest.jsonl` 为每个来源保留原始获取路径、Skill 相对资产路径与 SHA-256；项目版和桌面副本均已验证为 108/108 可定位且哈希一致。为便于离线检索，Skill 同时携带 articles、sections、normalized records、规则/案例/冲突库及统一批次的 781 主张、36 案例和审查报告副本。
+
+新增 `references/27_portable_108_evidence_pack.md`、Skill `18i` 和 T059 eval：每个使用资料包的广告/关键词回答必须列出本次**实际命中**的 source ID/文件及 claim/case/位置，并区分 `来源观察`、`作者思路/解释`、`审查状态`、`本次结论依据` 与 `当前适用边界`。108 份资料构成可检索背景，不允许把全部资料名当作每条结论的伪引用；无直接匹配时必须如实说明，不能强行给出来源支持的结论。`PARTIAL` 仍只表示默认二进制自动读取限制，不等于资料未读或全部业务主张已获证明。
+
+2026-08-17 已把用户重新提供的两份原件纳入项目版和桌面 Codex 安装副本的 Skill 资产：`亚马逊CPC广告打法知识体系全梳理v1_20260804.docx`（SHA-256 `123d25…de6693`）和 143 页 `亚马逊专题课-进阶广告诊断有优化全指导.pdf`（SHA-256 `3f75d0…7e86df`）。新增 `references/26_full_source_materials.md`：对来源问题必须分开写来源观察、作者思路/解释和审查后结论；原件是完整内容权威，结构化层只用于检索，不能替代原件或把案例/阈值升级为规则。桌面副本位于 `C:\Users\liuya\.codex\skills\ads_skill\skills\amazon-ads-keyword-strategy`，已同步全部项目 Skill 文件与两份原件。
+
+CPC 原件已通过 Open XML 按正文顺序完整导出为 `cpc_playbook_full_content_2026-08-17.jsonl`：168 条来源忠实记录（142 段、26 表），并新增 8 条可检索来源案例，分别保留指标、观察结果、作者解释、动作与交叉验证边界。其 21 条既有原子主张和 8 条新案例均为 0 契约错误；单来源报告仍为 `PARTIAL`，仅因默认读取器不能直接解析二进制 DOCX，且 `manual_reviewed: true` 已记录。PDF 原件的既有 143/143 页人工视觉审查、18 条页码主张与 4 条来源案例已随包携带；同样不把图片型 PDF 的机器不可读状态误称为内容未读。
 
 本轮新增 Skill-first 广告决策门槛：任何广告优化、关键词、竞品、预算、竞价、否词、排名或生命周期建议，都必须先读取当前实际使用的 `SKILL.md` 和任务相关 References Map 文件；输出需显示 `Skill 使用状态`、实际 Skill 路径、已加载 reference 和应用约束。Skill 或必要 reference 无法加载时，只能给诊断问题、补数要求或可逆测试，不能凭通用经验直接给广告动作。新增 `references/25_skill_first_decision_gate.md` 和 T057 eval，并同步到 Codex 安装副本的 MCP/Skill-first 核心规则。
 
@@ -42,6 +64,8 @@
 - `ads-skill.zip`：Git 状态为删除。
 - `ads_skill.zip`：Git 状态为未跟踪。
 
+- 本轮新增原件资产包含约 150 MB 的 PDF；若后续准备提交或发布，先确认远端仓库的大文件策略、用户授权与下载包体积。原件未被改写。
+
 不得在没有用户授权的情况下恢复、删除或提交这两个文件。
 
 ## 已确定的长期规则
@@ -57,6 +81,8 @@
 - 当后续广告诊断触及这类案例或条件化主张时，必须主动显示来源状态 / 案例置信度、适用边界、关键不匹配及可逆验证方式。
 
 ## 未决事项
+
+- CPC Word 的视觉渲染 QA 仍为 `BLOCKED`：`pdf2image` 和 Poppler 已补齐，但缺少 LibreOffice/`soffice`，Documents Skill 标准渲染器无法完成 DOCX→PDF 转换。原件哈希、Open XML 全文节点导出、来源/案例契约校验和桌面副本哈希均已完成；若需要视觉版 QA，先完成 LibreOffice 安装并验证可执行文件，再重跑标准渲染器。
 
 - 当前已完成进阶诊断讲义的单独主张审查：`data/processed/amazon_ads_skill/advanced_ads_claims.jsonl`、`claim_review_advanced_ads.jsonl`、`source_manifest_advanced_ads_review.jsonl` 和 `source_validation_advanced_ads_report.md`。报告为 `PARTIAL`，因为 DOCX 被自动清单器标记为二进制不可读，且项目 100 篇原文未逐条全部覆盖；内容本身已通过 OOXML 全文解析和人工交叉判断。
 - 最新整理版单独审查产物为 `advanced_ads_rewrite_v2_claims.jsonl`、`claim_review_advanced_ads_rewrite_v2.jsonl`、`source_manifest_advanced_ads_rewrite_v2.jsonl`、`source_case_records_advanced_ads_rewrite_v2.jsonl` 和 `source_validation_advanced_ads_rewrite_v2_report.md`。报告为 `PARTIAL`；22 条主张状态为 supported 7、context_dependent 11、unsupported 2、unresolved 2，6 条来源案例全部通过案例契约校验。

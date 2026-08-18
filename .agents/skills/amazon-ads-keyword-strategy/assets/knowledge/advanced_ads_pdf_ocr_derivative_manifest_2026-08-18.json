@@ -1,0 +1,19 @@
+{
+  "derivative_id": "DERIV-SRC-3a9e4ddd5371-OCR-2026-08-18",
+  "source_id": "SRC-3a9e4ddd5371",
+  "source_asset": "assets/source_materials/亚马逊专题课-进阶广告诊断有优化全指导.pdf",
+  "source_sha256": "3f75d0ed42cf8fd7e8818fa82beaf57d9d593cd01753a30b141e87054b7e86df",
+  "derived_docx": "assets/derivatives/亚马逊专题课-进阶广告诊断有优化全指导-OCR文字检索版.docx",
+  "derived_docx_sha256": "d12781a0731bc3315be8a65470958767633335ca3616ad5f6a9b106294db44b7",
+  "ocr_jsonl": "assets/knowledge/advanced_ads_pdf_ocr_full_2026-08-18.jsonl",
+  "ocr_jsonl_sha256": "b2fd66ffe48b0efd1b9a5999df273c4b674efeef91ca0b382a82e212e4829758",
+  "page_count": 143,
+  "ocr_line_count": 10245,
+  "ocr_character_count": 119644,
+  "empty_page_count": 0,
+  "low_confidence_line_count": 716,
+  "ocr_engine": "rapidocr-onnxruntime 1.4.4",
+  "created_at": "2026-08-18",
+  "source_authority": "original_pdf_only",
+  "use_boundary": "Machine OCR is a searchable retrieval derivative. Verify tables, screenshots, formulas, numbers, proper nouns, and low-confidence text against the original PDF page."
+}

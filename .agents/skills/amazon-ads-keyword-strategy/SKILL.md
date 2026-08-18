@@ -93,6 +93,10 @@ Helpful but not always required:
 18e. Use `references/22_full_batch_review_2026-08-13.md` and the generated full-batch JSONL/report when the user asks whether all 100 project articles and all uploaded material were reviewed together. Distinguish machine readability from manual review and distinguish source coverage from factual support.
 18f. Use `references/23_advanced_ads_pdf_live_review_2026-08-13.md` and the `PDFLIVE-*` claim/case artifacts for direct questions about the 143-page advanced-diagnosis PDF. Treat the PDF as visually reviewed but machine-unreadable, keep its 2025-05 UI descriptions historical, and show `讲义案例提示` when a retained PDF claim or case matches the question.
 18g. Use `references/24_live_market_data_mcp_decision_gate.md` whenever a recommendation needs current market, competitor, keyword, demand, trend, ranking, or expansion data. The installed 西柚洞察 MCP is the required live market evidence layer; never invent an operation or fabricate a result. A missing/failed call permits only a diagnostic question, conditional alternatives, or reversible low-risk test—not a strong market-dependent decision.
+18h. Use `references/26_full_source_materials.md` when the user asks about the full content, cases, worked examples, or author reasoning in the CPC playbook or advanced-diagnosis PDF. Search the source-faithful structured layer first, then open the bundled original asset for full context. Keep `来源观察`, `作者思路/解释`, and reviewed conclusion/status separate.
+18i. Use `references/27_portable_108_evidence_pack.md` for any answer that needs the 100 internal articles or all 8 user uploads as background. Search the portable manifest and structured layer, open only actually matched original assets for full context, and show the `证据依据` contract with source location, source observation, author reasoning, review status, conclusion basis, and applicability boundary. Do not cite all 108 sources as if each directly proves the answer.
+18j. For this user's knowledge questions about uploaded files, prioritize a concise `结论与依据` answer: conclusion first, then actual source background, matching uploaded case (or `未命中具体案例`), reasoning, review status, and applicability boundary. Do not require the user to inspect PNGs, screenshots, OCR intermediates, or Word visual QA before answering; use those internally only when needed to verify a cited passage.
+18k. Use `references/28_full_content_retrieval_coverage_108_2026-08-18.md` when a question needs any of the 108 sources as background. Search the matched full-content layer and the 48-record case-background index before relying on a summary. Give the matched case's background, metrics, observation, author explanation, action/unknown action, and transfer boundary; explicitly say `未命中具体案例` when none matches.
 19. For every future source, retain all concrete decision-relevant cases in the source-case record layer described in `references/14_source_validation_and_conflict_protocol.md`; preserve source-faithful metrics, observations, stated explanation, and limitations even when the case cannot support a general rule.
 20. When answering a question materially related to a retained conditional claim or source case, proactively disclose its `来源状态` / case confidence, conditions, material differences, and validation boundary, even if the user did not explicitly ask about uncertainty.
 21. Produce a 7-day, 14-day, and 30-day action plan.
@@ -292,6 +296,12 @@ For a full diagnosis, use this structure:
 
 For a narrow question, use only the relevant sections. Do not fill unrelated sections with generic text. For source-review tasks, prioritize source scope, claim status, evidence boundaries, case retention, coverage, and verification results instead of forcing an advertising diagnosis template.
 
+When the portable evidence pack materially informs an answer, include the compact `证据依据` block required by `references/27_portable_108_evidence_pack.md`. It must name the actual matched source IDs/files and locations, not merely say that the 108-source pack exists.
+
+For a user knowledge question, lead with `结论` and then give `资料背景`、`是否命中上传案例`、`结论理由`、`来源状态/适用边界`. Do not make image viewing or document visual QA a prerequisite for this answer format.
+
+For a 108-source knowledge answer, search `assets/knowledge/full_content_coverage_108_2026-08-18.jsonl` to select the source's retrieval layer, then search that layer and `portable_case_background_index_2026-08-18.jsonl`. Open the matched original asset for material tables, figures, OCR uncertainty, or full author context. Never substitute a case title or claim summary for the detailed case background.
+
 # References Map
 
 - `01_taxonomy.md`: record taxonomy, topics, confidence, and noise types.
@@ -319,6 +329,9 @@ For a narrow question, use only the relevant sections. Do not fill unrelated sec
 - `23_advanced_ads_pdf_live_review_2026-08-13.md`: live 143-page PDF review, 18 atomic claims, four source-faithful cases, page-level evidence boundaries, current Amazon cross-checks, and PDF-specific answer markers.
 - `24_live_market_data_mcp_decision_gate.md`: required 西柚洞察 MCP gate for current market, competitor, keyword, trend, ranking, and expansion decisions; call logging, freshness, partial/blocked handling, and evidence boundaries.
 - `25_skill_first_decision_gate.md`: mandatory Skill-first loading order, reference selection, status reporting, conflict handling, and prohibition on giving ad advice from general memory outside the Skill.
+- `26_full_source_materials.md`: bundled original-access and retrieval contract for the complete CPC playbook and 143-page advanced-diagnosis PDF, including source-faithful content, cases, and author reasoning.
+- `27_portable_108_evidence_pack.md`: portable original assets and SHA-256-verified manifest for 100 project articles plus 8 user files; mandatory actual-evidence answer contract.
+- `28_full_content_retrieval_coverage_108_2026-08-18.md`: verified full-content retrieval coverage for all 108 source assets, the per-file retrieval layers, detailed case-background index, OCR boundary, and re-audit procedure.
 
 # Explicit Prohibitions
 
@@ -360,5 +373,7 @@ Before finalizing:
 - For any current market/competitor/keyword/trend/ranking/expansion decision, show `实时数据调用状态` and the MCP query scope; use `COMPLETE`, `PARTIAL`, `BLOCKED`, or `NOT_REQUIRED` honestly.
 - Never fabricate MCP tool names, fields, dates, records, or results; a failed or incomplete MCP call cannot be reported as validated data.
 - For any Amazon advertising optimization advice, show `Skill 使用状态`, the loaded Skill path, task-relevant references, and applied constraints; do not give advice before the Skill-first gate is satisfied.
-- If the Skill or required reference cannot be loaded, do not substitute generic advertising knowledge for the Skill; ask for the missing source or provide only diagnostic questions and reversible tests.
+  - If the Skill or required reference cannot be loaded, do not substitute generic advertising knowledge for the Skill; ask for the missing source or provide only diagnostic questions and reversible tests.
+  - When using the portable 108-source pack, state the actual matched sources, locations, source observations, author reasoning, status, conclusion basis, and applicability boundary; do not pretend all 108 sources independently support a conclusion.
+  - For the user's uploaded-material questions, answer with conclusion, source background, case match, reasoning, and boundary; do not substitute a PNG/Word visual-QA discussion for the requested business answer.
 - Keep recommendations tied to evidence and business objective.

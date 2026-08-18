@@ -33,8 +33,18 @@ Evidence base generated from 100 markdown posts split into 2002 sections. The ex
 | `advanced_ads_pdf_live_claims_2026-08-13.jsonl` / `claim_review_advanced_ads_pdf_live_2026-08-13.jsonl` | 18 page-located atomic claims from the live PDF review, with current-platform cross-checks and uncertainty states. |
 | `source_case_records_advanced_ads_pdf_live_2026-08-13.jsonl` | Four source-faithful PDF cases; same-family duplicates are retained for traceability but not counted as independent evidence. |
 | `source_validation_report_advanced_ads_pdf_live_2026-08-13.md` | Full 143-page render/review coverage report; `PARTIAL` because the PDF has no usable machine text layer. |
+| `advanced_ads_pdf_ocr_full_2026-08-18.jsonl` | 143-page, 10,245-line machine OCR retrieval layer for the original course PDF. Every row retains its original PDF page; 716 low-confidence lines remain uncorrected and require page-level verification. Portable copy is in `assets/knowledge/`. |
+| `advanced_ads_pdf_ocr_derivative_manifest_2026-08-18.json` | Hashes, page/line counts, source authority, and retrieval limits for the OCR Word/JSONL derivative. |
+| `cpc_playbook_full_content_2026-08-17.jsonl` | All 168 Word body nodes (142 paragraphs and 26 tables) from the bundled CPC playbook, preserved as source-faithful searchable records. |
+| `source_case_records_cpc_playbook_full_2026-08-17.jsonl` | Eight source-faithful CPC worked examples and account observations, with reported metrics, author explanation, action, and applicability boundary kept separate. |
+| `source_validation_report_cpc_playbook_full_2026-08-17.md` | CPC playbook full-content review; original Word is manually reviewed and retained, while the default binary reader keeps the machine status `PARTIAL`. |
 | `24_live_market_data_mcp_decision_gate.md` | 西柚洞察 MCP live-data gate for current market, competitor, keyword, trend, ranking, and expansion decisions; includes query logging and blocked/partial rules. |
 | `25_skill_first_decision_gate.md` | Mandatory Skill-first loading order before Amazon advertising recommendations, reference selection, status reporting, and generic-advice prohibition. |
+| `portable_108_source_manifest.jsonl` | SHA-256-verified portable-asset map for all 108 reviewed sources: 100 project articles and 8 user documents. Stored in `assets/knowledge/`; preserves original paths separately from Skill-relative copies. |
+| `27_portable_108_evidence_pack.md` | Mandatory retrieval and answer-evidence contract: name actual source/claim/case matches rather than presenting all 108 sources as direct support. |
+| `full_content_coverage_108_2026-08-18.jsonl` | Source-by-source retrieval audit: 108/108 original assets and their full-text, cell, page-OCR or embedded-media-OCR layers; `incomplete` must be treated as a retrieval gap. |
+| `portable_case_background_index_2026-08-18.jsonl` | 48 source-preserving case records for detailed background retrieval; retains metrics, observation, author explanation, action/unknown action and transfer boundary. |
+| `28_full_content_retrieval_coverage_108_2026-08-18.md` | Retrieval-layer selection, audit interpretation, case-background answer contract, and OCR/original-source boundary. |
 
 ## High-Signal Source Clusters
 
@@ -53,6 +63,7 @@ Evidence base generated from 100 markdown posts split into 2002 sections. The ex
 | Image-report placement and rank claims | Use placement/purchased-product cases diagnostically; do not guarantee organic rank. | `SRC-3d7548bc16d9`, `references/20_image_ad_report_integration.md` |
 | Unified full-batch audit | 100 project articles + 8 user files; 108 sources, 781 claims, 36 cases; machine readability is separate from manual review. | `data/processed/amazon_ads_skill/source_manifest_full_batch_2026-08-13.jsonl`, `data/processed/amazon_ads_skill/full_batch_claim_review_2026-08-13.jsonl`, `data/processed/amazon_ads_skill/source_validation_report_full_batch_2026-08-13.md`, `references/22_full_batch_review_2026-08-13.md` |
 | Live advanced-diagnosis PDF | 143-page visual review; report matrix, aggregation, targeting, negatives, keyword research, variants and lifecycle claims; current UI takes precedence over the PDF snapshot. | `SRC-3a9e4ddd5371`, `references/23_advanced_ads_pdf_live_review_2026-08-13.md` |
+| Portable desktop evidence pack | Offline retrievable originals for the full reviewed batch; use SHA-256 manifest and list only actual question matches as evidence. | `assets/knowledge/portable_108_source_manifest.jsonl`, `references/27_portable_108_evidence_pack.md` |
 
 ## Confidence Notes
 
