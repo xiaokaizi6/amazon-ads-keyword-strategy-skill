@@ -2,8 +2,8 @@
 
 - 最后更新：2026-08-19
 - 当前分支：`main`
-- 最新已核对远端提交：本轮未执行 fetch/push；提交状态以本地 `git status` / `git log` 验证为准。
-- 最新任务记录：`docs/handoffs/2026-08-19-30-ad-tactics-integration.md`
+- 本次 Skill 内容发布提交：`d086ff48cf769395a4e4c9989e8096c08e15c62c`（已直接推送至 `origin/main`，未创建分支或 PR）。
+- 最新任务记录：`docs/handoffs/2026-08-19-31-main-publication.md`
 
 ## 当前状态
 
@@ -13,7 +13,7 @@
 
 当前便携资料范围由 108 扩展到 **109**：100 篇项目文章 + 9 份用户资料。`assets/knowledge/portable_109_source_manifest_2026-08-19.jsonl` 的原件映射均已校验，`full_content_coverage_109_2026-08-19.jsonl` 为 109/109 `available_with_source_boundaries`；详细案例背景索引仍是 48 条，因为新 PDF 没有新增来源忠实账户案例。新增 `references/29_30_ad_tactics_integration_2026-08-19.md`、Skill 规则与 T063 eval，要求后续回答继续使用“结论—资料背景—是否命中上传案例—结论理由—来源状态/适用边界”，并列实际命中的页码/claim，而不是把 109 份资料全列为证据。
 
-本轮已把 18 个新增/变更的 Skill 文件同步到桌面安装副本 `C:\Users\liuya\.codex\skills\ads_skill\skills\amazon-ads-keyword-strategy`，18/18 SHA-256 一致；桌面副本的 109 来源便携包校验为 0 完整性错误。未提交、未推送、未发布新变更；未处理既有 `outputs/`、`tmp/` 未跟踪文件。
+本轮已把 18 个新增/变更的 Skill 文件同步到桌面安装副本 `C:\Users\liuya\.codex\skills\ads_skill\skills\amazon-ads-keyword-strategy`，18/18 SHA-256 一致；桌面副本的 109 来源便携包校验为 0 完整性错误。用户随后授权直接上传，整合内容已作为 `d086ff48cf769395a4e4c9989e8096c08e15c62c` 推送至 `origin/main`，未创建分支或 PR；未处理既有 `outputs/`、`tmp/` 未跟踪文件。
 
 2026-08-18 已按“可检索内容覆盖”而非仅文件数量复审 108 份资料。`assets/knowledge/full_content_coverage_108_2026-08-18.jsonl` 对 portable manifest 的 100 篇项目文章和 8 份用户资料逐一验证：108/108 为 `available_with_source_boundaries`、无 `validation_issues`。覆盖层包括 2,002 个文章分段、CPC Word 168 个正文/表格节点、原 PDF 143 页 OCR、两份进阶诊断 Word 的 194/79 个节点、图片广告报告 12 张嵌入图 OCR、划线价 Word 的 64 个节点+11 图 OCR、折扣 Excel 1,097 个单元格+1 图 OCR，以及新品流程 Excel 309 个单元格。原件仍保留在 `assets/source_materials/` 并是内容权威；OCR 仅为检索定位层，精确表格、图片、数字、公式及低置信度内容必须回查原件。
 
