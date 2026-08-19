@@ -45,6 +45,9 @@ Evidence base generated from 100 markdown posts split into 2002 sections. The ex
 | `full_content_coverage_108_2026-08-18.jsonl` | Source-by-source retrieval audit: 108/108 original assets and their full-text, cell, page-OCR or embedded-media-OCR layers; `incomplete` must be treated as a retrieval gap. |
 | `portable_case_background_index_2026-08-18.jsonl` | 48 source-preserving case records for detailed background retrieval; retains metrics, observation, author explanation, action/unknown action and transfer boundary. |
 | `28_full_content_retrieval_coverage_108_2026-08-18.md` | Retrieval-layer selection, audit interpretation, case-background answer contract, and OCR/original-source boundary. |
+| `source_manifest_30_ad_tactics_2026-08-19.jsonl` / `claim_review_30_ad_tactics_2026-08-19.jsonl` | Separate, source-faithful review of the 7-page `30种捡漏广告玩法.pdf`: 8 retained claims and zero account cases; status is `PARTIAL` only because the original PDF is binary to the default manifest parser. |
+| `portable_109_source_manifest_2026-08-19.jsonl` / `full_content_coverage_109_2026-08-19.jsonl` | Current portable scope: 100 project articles plus 9 user documents, 109/109 retrievable with source boundaries. The 48-case index remains unchanged because the new PDF contains tactics rather than source-faithful account cases. |
+| `29_30_ad_tactics_integration_2026-08-19.md` | Mandatory source/claim/page boundary when answering questions about the new low-cost “捡漏” tactics PDF. |
 
 ## High-Signal Source Clusters
 

@@ -375,3 +375,20 @@ The answer must not:
 - assert that all lecture claims are verified merely because all files are retrievable;
 - use a case title alone as its background or turn a case into a default action;
 - call a file integrated when its audit status is `incomplete`.
+
+## T063: New Tactics PDF Must Retain Its Evidence Boundary
+
+When a user asks about the `30种捡漏广告玩法.pdf`, the answer must include:
+
+- `SRC-4c37c63ff3a0`, the actual PDF page/claim, and `references/29_30_ad_tactics_integration_2026-08-19.md`;
+- the conclusion before process detail, with the claim status for the requested tactic;
+- `未命中具体案例` and `0 条来源案例` when asking for an account case, because the PDF presents tactics without verifiable account metrics;
+- the original-PDF authority and OCR retrieval-aid boundary;
+- a statement that its fixed bids, budgets, TOS adjustments, or keyword-relevance shortcuts require account conditions and cannot become automatic actions.
+
+The answer must not:
+
+- give the source's fixed numbers as a direct bid or placement action;
+- call an author tactic a source-faithful account case;
+- claim all 30 items have been located when only 28 numbered items are present in the supplied PDF;
+- use page OCR as a substitute for the original PDF.

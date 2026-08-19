@@ -1,11 +1,19 @@
 # Codex 当前交接
 
-- 最后更新：2026-08-18
+- 最后更新：2026-08-19
 - 当前分支：`main`
-- 最新已核对远端提交：`dff050ac88dcbe26822cbf58a18a96f3af121a27`
-- 最新任务记录：`docs/handoffs/2026-08-18-108-full-content-retrieval-audit.md`
+- 最新已核对远端提交：本轮未执行 fetch/push；提交状态以本地 `git status` / `git log` 验证为准。
+- 最新任务记录：`docs/handoffs/2026-08-19-30-ad-tactics-integration.md`
 
 ## 当前状态
+
+2026-08-19 已新增并融入用户提供的 7 页 PDF《30种捡漏广告玩法(1).pdf》，来源 ID `SRC-4c37c63ff3a0`。原件已保留到 `assets/source_materials/30种捡漏广告玩法.pdf`，并核对 SHA-256 `4c37c63ff3a0d206ab55bd824adee732b906eb8423103120032e0482f8daefad`；7 页以 140 dpi 渲染、逐页阅读，生成 7 页/156 行 OCR 检索 JSONL 与搜索版 Word。原件仍是内容权威，OCR 仅用于定位。标题称“30种”，但原件只定位到 28 个编号玩法和末尾错拼词补充；未定位第 29/30 项，已保留为 `T30-CLM-008` `unresolved`，不得补写。
+
+新增 8 条原子主张，独立审查报告为 `PARTIAL`：并非资料未读，而是默认 manifest 解析器不直接读取二进制 PDF；8 条主张均通过字段契约，来源本身没有可核验的账户时间、站点、指标或对照组。它提供的是作者玩法而非账户案例，故本批 `0` 条来源忠实案例；以后命中本资料时必须明确“未命中具体案例”，不能将玩法/数值阈值伪装为案例。固定 `0.02`、`0.2`、平均 CPC 比例、TOS `900%`、每活动 `$5`、价格区间和历史花费数字均未升级为通用动作；相关性跳过的主张为 `unsupported`，搜索词迁移、自动四组、独立活动和 SP→SB/SD 扩展均保持 `context_dependent` 或 `disputed` 并须账户级可逆测试。
+
+当前便携资料范围由 108 扩展到 **109**：100 篇项目文章 + 9 份用户资料。`assets/knowledge/portable_109_source_manifest_2026-08-19.jsonl` 的原件映射均已校验，`full_content_coverage_109_2026-08-19.jsonl` 为 109/109 `available_with_source_boundaries`；详细案例背景索引仍是 48 条，因为新 PDF 没有新增来源忠实账户案例。新增 `references/29_30_ad_tactics_integration_2026-08-19.md`、Skill 规则与 T063 eval，要求后续回答继续使用“结论—资料背景—是否命中上传案例—结论理由—来源状态/适用边界”，并列实际命中的页码/claim，而不是把 109 份资料全列为证据。
+
+本轮已把 18 个新增/变更的 Skill 文件同步到桌面安装副本 `C:\Users\liuya\.codex\skills\ads_skill\skills\amazon-ads-keyword-strategy`，18/18 SHA-256 一致；桌面副本的 109 来源便携包校验为 0 完整性错误。未提交、未推送、未发布新变更；未处理既有 `outputs/`、`tmp/` 未跟踪文件。
 
 2026-08-18 已按“可检索内容覆盖”而非仅文件数量复审 108 份资料。`assets/knowledge/full_content_coverage_108_2026-08-18.jsonl` 对 portable manifest 的 100 篇项目文章和 8 份用户资料逐一验证：108/108 为 `available_with_source_boundaries`、无 `validation_issues`。覆盖层包括 2,002 个文章分段、CPC Word 168 个正文/表格节点、原 PDF 143 页 OCR、两份进阶诊断 Word 的 194/79 个节点、图片广告报告 12 张嵌入图 OCR、划线价 Word 的 64 个节点+11 图 OCR、折扣 Excel 1,097 个单元格+1 图 OCR，以及新品流程 Excel 309 个单元格。原件仍保留在 `assets/source_materials/` 并是内容权威；OCR 仅为检索定位层，精确表格、图片、数字、公式及低置信度内容必须回查原件。
 

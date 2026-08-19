@@ -300,7 +300,9 @@ When the portable evidence pack materially informs an answer, include the compac
 
 For a user knowledge question, lead with `结论` and then give `资料背景`、`是否命中上传案例`、`结论理由`、`来源状态/适用边界`. Do not make image viewing or document visual QA a prerequisite for this answer format.
 
-For a 108-source knowledge answer, search `assets/knowledge/full_content_coverage_108_2026-08-18.jsonl` to select the source's retrieval layer, then search that layer and `portable_case_background_index_2026-08-18.jsonl`. Open the matched original asset for material tables, figures, OCR uncertainty, or full author context. Never substitute a case title or claim summary for the detailed case background.
+For a knowledge answer using the current portable corpus, search `assets/knowledge/full_content_coverage_109_2026-08-19.jsonl` to select the source's retrieval layer, then search that layer and `portable_case_background_index_109_2026-08-19.jsonl`. Open the matched original asset for material tables, figures, OCR uncertainty, or full author context. Never substitute a case title or claim summary for the detailed case background. The current scope is 109 sources (100 project articles and 9 user documents); retain the 108-source artifacts for their historical audit boundary.
+
+When the question matches `SRC-4c37c63ff3a0` (`30种花样捡漏广告玩法.pdf`), load `references/29_30_ad_tactics_integration_2026-08-19.md` and the actual page/claim. Treat its tactics as conditional source claims, not account cases: it contributes zero source-faithful cases, and its title/numbering difference (30 in title versus 28 located numbered tactics) remains unresolved. Fixed bids, TOS adjustments, budgets, keyword relevance shortcuts and cross-ad-product expansion must not become automatic actions.
 
 # References Map
 
@@ -332,6 +334,7 @@ For a 108-source knowledge answer, search `assets/knowledge/full_content_coverag
 - `26_full_source_materials.md`: bundled original-access and retrieval contract for the complete CPC playbook and 143-page advanced-diagnosis PDF, including source-faithful content, cases, and author reasoning.
 - `27_portable_108_evidence_pack.md`: portable original assets and SHA-256-verified manifest for 100 project articles plus 8 user files; mandatory actual-evidence answer contract.
 - `28_full_content_retrieval_coverage_108_2026-08-18.md`: verified full-content retrieval coverage for all 108 source assets, the per-file retrieval layers, detailed case-background index, OCR boundary, and re-audit procedure.
+- `29_30_ad_tactics_integration_2026-08-19.md`: source-faithful integration of the 7-page user PDF, 8 conditional claims, zero account cases, fixed-number and relevance boundaries, 30-versus-28 numbering discrepancy, and the 109-source retrieval scope.
 
 # Explicit Prohibitions
 
